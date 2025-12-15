@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AirPaint Pro - Loja Integrada ao Firebase</title>
+    
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script> 
+    
+    <style>
+        /* --- ESTILOS GERAIS (Mantidos para brevidade) --- */
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; color: #333; }
+        header { background-color: #004d99; color: white; padding: 10px 20px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); display: flex; justify-content: space-between; align-items: center; }
+        .header-content { display: flex; align-items: center; }
+        #logo-area { font-size: 1.8em; font-weight: bold; margin-right: 30px; color: #ff6600; }
+        header h1 { margin: 0; font-size: 1.5em; }
+        .btn-admin-toggle { background-color: #ff6600; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s; }
+        .btn-admin-toggle:hover { background-color: #e65c00; }
+        .container { display: flex; max-width: 1200px; margin: 20px auto; padding: 0 20px; }
+        #loja-container { flex: 3; margin-right: 20px; }
+        #produtos { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; padding-bottom: 20px; }
+        .produto-card { background-color: white; padding: 15px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); text-align: center; }
+        .produto-card img { max-width: 100%; height: auto; border-radius: 4px; margin-bottom: 10px; max-height: 200px; width: auto; object-fit: contain; }
+        .produto-card h3 { font-size: 1.2em; margin: 10px 0; min-height: 40px; }
+        .produto-card .preco { font-size: 1.5em; color: #cc0000; margin-bottom: 15px; font-weight: bold; }
+        .btn-comprar { background-color: #ff6600; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s; }
+        .btn-comprar:hover { background-color: #e65c00; }
+        #carrinho { flex: 1; background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); position: sticky; top: 20px; max-height: 80vh; overflow-y: auto; }
+        #carrinho h2 { border-bottom: 2px solid #eee; padding-bottom: 10px; margin-top: 0; }
+        #carrinho-lista { list-style: none; padding: 0; }
+        #carrinho-lista li { padding: 10px 0; border-bottom: 1px dashed #eee; display: flex; justify-content: space-between; align-items: center; }
+        .remover-btn { background: none; border: none; color: #cc0000; cursor: pointer; font-weight: bold; }
+        #total { margin-top: 20px; font-size: 1.4em; font-weight: bold; border-top: 2px solid #004d99; padding-top: 10px; }
+        
+        /* --- ESTILOS DO PAINEL ADMIN COM ABAS --- */
+        #admin-panel { background-color: white; padding: 20px 40px 40px; margin: 20px auto; max-width: 900px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); display: none; }
+        .tabs { display: flex; border-bottom: 1px solid #ccc; margin-bottom: 20px; }
+        .tab-button { background: #eee; border: none; padding: 10px 20px; cursor: pointer; border-top-left-radius: 5px; border-top-right-radius: 5px; margin-right: 5px; }
+        .tab-button.active { background: #004d99; color: white; border-bottom: 2px solid #004d99; }
+        .tab-content { padding: 20px 0; }
+        
+        /* Formulário e Tabela de Produtos */
+        .admin-form label { display: block; margin-top: 10px; font-weight: bold; }
+        .admin-form input, .admin-form button { width: calc(100% - 22px); padding: 10px; margin-top: 5px; border-radius: 5px; border: 1px solid #ccc; box-sizing: border-box; }
+        .admin-form button[type="submit"] { width: 100%; margin-top: 20px; background-color: #008000; color: white; font-weight: bold; cursor: pointer; border: none; transition: background-color 0.3s; }
+        .admin-form button[type="submit"]:hover { background-color: #006600; }
+        #tabela-produtos, #tabela-pedidos { width: 100%; border-collapse: collapse; margin-top: 30px; }
+        #tabela-produtos th, #tabela-produtos td, #tabela-pedidos th, #tabela-pedidos td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        #tabela-produtos th, #tabela-pedidos th { background-color: #f2f2f2; }
+        .btn-acao { padding: 5px 10px; margin-right: 5px; border: none; border-radius: 3px; cursor: pointer; }
+        .btn-editar { background-color: #004d99; color: white; }
+        .btn-excluir { background-color: #cc0000; color: white; }
+        /* Estilos de Pedido */
+        .status-pendente { color: orange; font-weight: bold; }
+        .status-processando { color: blue; font-weight: bold; }
+        .status-enviado { color: green; font-weight: bold; }
+        /* --- FIM DOS ESTILOS --- */
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-content">
+            <div id="logo-area">AIRPAINT PRO</div>
+            <h1>Soluções Pneumáticas para Pintura</h1>
+        </div>
+        <button class="btn-admin-toggle" onclick="toggleAdminPanel()">Abrir Admin</button>
+    </header>
+
+    <section id="admin-panel">
+        <h2>Gerenciamento Administrativo</h2>
+
+        <div class="tabs">
+            <button class="tab-button active" onclick="showTab('produtos-tab', this)">Gerenciar Produtos</button>
+            <button class="tab-button" onclick="showTab('pedidos-tab', this)">Visualizar Pedidos/O.S.</button>
+        </div>
+
+        <div id="produtos-tab" class="tab-content">
+            <h3>Cadastro e Edição de Produtos</h3>
+            
+            <form id="produto-form" class="admin-form">
+                <input type="hidden" id="produto-id">
+                <label for="nome">Nome do Produto:</label>
+                <input type="text" id="nome" required>
+
+                <label for="preco">Preço (Ex: 150.75):</label>
+                <input type="number" step="0.01" id="preco" required>
+
+                <label for="imagem-upload">Carregar Imagem do Computador:</label>
+                <input type="file" id="imagem-upload" accept="image/*">
+                <input type="hidden" id="imagem-base64">
+                
+                <button type="submit" id="salvar-btn">Salvar Produto no Firebase</button>
+            </form>
+
+            <h3>Produtos Cadastrados (Firestore)</h3>
+            <table id="tabela-produtos">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Preço</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="tabela-produtos-corpo">
+                    </tbody>
+            </table>
+        </div>
+
+        <div id="pedidos-tab" class="tab-content" style="display: none;">
+            <h3>Pedidos Recebidos dos Clientes</h3>
+            <p>Aqui estão os carrinhos que os clientes enviaram (salvos na coleção '/pedidos/').</p>
+            <table id="tabela-pedidos">
+                <thead>
+                    <tr>
+                        <th>Pedido ID</th>
+                        <th>Data/Hora</th>
+                        <th>Itens</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="tabela-pedidos-corpo">
+                    </tbody>
+            </table>
+        </div>
+    </section>
+
+    <div id="store-view">
+        <div class="container">
+            <section id="loja-container">
+                <h2>Catálogo de Produtos</h2>
+                <div id="produtos">
+                    </div>
+            </section>
+
+            <aside id="carrinho">
+                <h2>🛒 Seu Carrinho</h2>
+                <ul id="carrinho-lista">
+                    </ul>
+                <div id="total">
+                    Total: R$ 0,00
+                </div>
+                <button style="width: 100%; margin-top: 15px; background-color: #008000;" 
+                        onclick="finalizarCompraSimulada()">Enviar Pedido (Salvar no Firebase)</button>
+            </aside>
+        </div>
+    </div>
+
+    <script>
+        // 2. CONFIGURAÇÃO E INICIALIZAÇÃO DO FIREBASE
+        // SUBSTITUA ESTE OBJETO PELAS CHAVES REAIS DO SEU NOVO PROJETO 'new-era-f5622'
+        const firebaseConfig = {
+            apiKey: "AIzaSy...SUA_API_KEY_AQUI...", 
+            authDomain: "new-era-f5622.firebaseapp.com",
+            projectId: "new-era-f5622",
+            storageBucket: "new-era-f5622.appspot.com",
+            messagingSenderId: "1234567890",
+            appId: "1:1234567890:web:abcdef123456"
+        };
+
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore(); 
+        
+        let produtos = []; 
+        let carrinho = [];
+        const DEFAULT_IMAGE = "https://via.placeholder.com/300x200?text=Produto+Novo";
+
+        // --- 1. FUNÇÕES GERAIS ---
+        function formatarMoeda(valor) {
+            return parseFloat(valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        }
+        function formatarData(timestamp) {
+            if (!timestamp) return 'N/A';
+            // Converte o timestamp do Firestore para objeto Date
+            const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+            return date.toLocaleString('pt-BR');
+        }
+
+        // --- 2. FUNÇÕES DA LOJA (CARREGANDO DO FIREBASE) ---
+
+        async function carregarProdutosDoFirestore() {
+            try {
+                const snapshot = await db.collection("produtos").get();
+                produtos = snapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+                renderizarProdutos();
+                renderizarAdminTable(); // Atualiza a tabela da aba Produtos
+            } catch (error) {
+                console.error("Erro ao carregar produtos:", error);
+                // Se falhar, exibe uma mensagem no console para debug
+                document.getElementById('produtos').innerHTML = '<p style="color: red;">Erro ao carregar produtos. Verifique sua conexão e as regras do Firebase.</p>';
+            }
+        }
+        
+        function renderizarProdutos() {
+            // ... (Função idêntica à anterior, usa a lista 'produtos' preenchida pelo Firebase)
+            const produtosContainer = document.getElementById('produtos');
+            produtosContainer.innerHTML = ''; 
+            if (produtos.length === 0) {
+                produtosContainer.innerHTML = '<p>Nenhum produto cadastrado no momento.</p>';
+                return;
+            }
+            produtos.forEach(produto => {
+                const card = document.createElement('div');
+                card.className = 'produto-card';
+                card.innerHTML = `
+                    <img src="${produto.imagem}" alt="${produto.nome}">
+                    <h3>${produto.nome}</h3>
+                    <div class="preco">${formatarMoeda(produto.preco)}</div>
+                    <button class="btn-comprar" onclick="adicionarAoCarrinho('${produto.id}')">Adicionar ao Carrinho</button>
+                `;
+                produtosContainer.appendChild(card);
+            });
+        }
+        
+        // ... (adicionarAoCarrinho, calcularTotal, renderizarCarrinho, removerDoCarrinho permanecem os mesmos)
+
+        window.adicionarAoCarrinho = function(produtoId) {
+            const produto = produtos.find(p => p.id === produtoId);
+            if (!produto) return; 
+            const itemExistente = carrinho.find(item => item.id === produtoId);
+
+            if (itemExistente) {
+                itemExistente.quantidade++;
+            } else {
+                carrinho.push({ id: produto.id, nome: produto.nome, preco: produto.preco, quantidade: 1 });
+            }
+            renderizarCarrinho();
+        };
+        function calcularTotal() {
+            const total = carrinho.reduce((acc, item) => acc + (item.preco * item.quantidade), 0);
+            document.getElementById('total').textContent = `Total: ${formatarMoeda(total)}`;
+        }
+        function renderizarCarrinho() {
+            const carrinhoLista = document.getElementById('carrinho-lista');
+            carrinhoLista.innerHTML = ''; 
+            if (carrinho.length === 0) {
+                carrinhoLista.innerHTML = '<li>O carrinho está vazio.</li>';
+            } else {
+                carrinho.forEach(item => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<span>${item.quantidade}x ${item.nome}</span><span>${formatarMoeda(item.preco * item.quantidade)}<button class="remover-btn" onclick="removerDoCarrinho('${item.id}')">x</button></span>`;
+                    carrinhoLista.appendChild(li);
+                });
+            }
+            calcularTotal();
+        }
+        window.removerDoCarrinho = function(produtoId) {
+            const itemIndex = carrinho.findIndex(item => item.id === produtoId);
+            if (itemIndex > -1) {
+                if (carrinho[itemIndex].quantidade > 1) {
+                    carrinho[itemIndex].quantidade--;
+                } else {
+                    carrinho.splice(itemIndex, 1);
+                }
+            }
+            renderizarCarrinho();
+        };
+
+        window.finalizarCompraSimulada = async function() {
+            if (carrinho.length === 0) {
+                alert("Seu carrinho está vazio. Adicione produtos antes de finalizar.");
+                return;
+            }
+
+            const total = carrinho.reduce((acc, item) => acc + (item.preco * item.quantidade), 0);
+            
+            const dadosDoPedido = {
+                itens: carrinho.map(item => ({
+                    id: item.id,
+                    nome: item.nome,
+                    quantidade: item.quantidade,
+                    precoUnitario: item.preco,
+                })),
+                totalGeral: total,
+                status: 'Pendente', // Status inicial do pedido
+                dataHora: firebase.firestore.FieldValue.serverTimestamp() // Salva a data e hora do servidor
+            };
+
+            try {
+                // Salva o pedido na coleção 'pedidos' do Firestore
+                await db.collection("pedidos").add(dadosDoPedido);
+                alert("✅ Pedido enviado ao administrador via Firebase com sucesso!");
+                
+                carrinho = [];
+                renderizarCarrinho();
+            } catch (error) {
+                console.error("Erro ao enviar pedido para o Firebase:", error);
+                alert("❌ Erro ao enviar pedido. Verifique suas regras do Firestore.");
+            }
+        };
+
+
+        // --- 3. FUNÇÕES DO ADMIN (GERENCIAMENTO) ---
+
+        function showTab(tabId, button) {
+            // Esconde todo o conteúdo da aba
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.style.display = 'none';
+            });
+            // Remove a classe 'active' de todos os botões
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Mostra o conteúdo da aba selecionada
+            document.getElementById(tabId).style.display = 'block';
+            // Ativa o botão selecionado
+            button.classList.add('active');
+
+            // Ação específica ao abrir a aba
+            if (tabId === 'pedidos-tab') {
+                carregarPedidosDoFirestore();
+            } else if (tabId === 'produtos-tab') {
+                carregarProdutosDoFirestore();
+            }
+        }
+
+        window.toggleAdminPanel = function() {
+            const adminPanel = document.getElementById('admin-panel');
+            const storeView = document.getElementById('store-view');
+            const btnToggle = document.querySelector('.btn-admin-toggle');
+            const isVisible = adminPanel.style.display === 'block';
+
+            adminPanel.style.display = isVisible ? 'none' : 'block';
+            storeView.style.display = isVisible ? 'block' : 'none';
+            btnToggle.textContent = isVisible ? 'Abrir Admin' : 'Voltar à Loja';
+            
+            if (!isVisible) {
+                // Ao abrir o painel, carrega os produtos e mostra a primeira aba
+                carregarProdutosDoFirestore(); 
+                showTab('produtos-tab', document.querySelector('.tab-button'));
+                limparFormulario(); 
+            }
+        };
+
+        // --- ABA PRODUTOS (CRUD) ---
+
+        function renderizarAdminTable() {
+            const corpoTabela = document.getElementById('tabela-produtos-corpo');
+            corpoTabela.innerHTML = '';
+
+            produtos.forEach(produto => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${produto.id.substring(0, 4)}...</td>
+                    <td>${produto.nome}</td>
+                    <td>${formatarMoeda(produto.preco)}</td>
+                    <td>
+                        <button class="btn-acao btn-editar" onclick="editarProduto('${produto.id}')">Editar</button>
+                        <button class="btn-acao btn-excluir" onclick="excluirProduto('${produto.id}')">Excluir</button>
+                    </td>
+                `;
+                corpoTabela.appendChild(tr);
+            });
+        }
+        
+        // ... (limparFormulario e editarProduto permanecem os mesmos, mas com IDs do Firestore)
+
+        function limparFormulario() {
+            document.getElementById('produto-id').value = '';
+            document.getElementById('nome').value = '';
+            document.getElementById('preco').value = '';
+            document.getElementById('imagem-upload').value = ''; 
+            document.getElementById('imagem-base64').value = ''; 
+            document.getElementById('salvar-btn').textContent = 'Salvar Produto no Firebase';
+            document.getElementById('salvar-btn').style.backgroundColor = '#008000';
+        }
+        window.editarProduto = function(produtoId) {
+            const produto = produtos.find(p => p.id === produtoId);
+            if (!produto) return;
+
+            document.getElementById('produto-id').value = produto.id;
+            document.getElementById('nome').value = produto.nome;
+            document.getElementById('preco').value = produto.preco;
+            document.getElementById('imagem-base64').value = produto.imagem; 
+            document.getElementById('imagem-upload').value = ''; 
+
+            document.getElementById('salvar-btn').textContent = `Atualizar Produto ID: ${produto.id.substring(0, 4)}...`;
+            document.getElementById('salvar-btn').style.backgroundColor = '#004d99';
+            document.getElementById('admin-panel').scrollIntoView({ behavior: 'smooth' });
+        };
+
+
+        document.getElementById('produto-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const id = document.getElementById('produto-id').value;
+            const nome = document.getElementById('nome').value;
+            const preco = parseFloat(document.getElementById('preco').value);
+            const imagemFile = document.getElementById('imagem-upload').files[0];
+            let imagemBase64 = document.getElementById('imagem-base64').value;
+
+            if (imagemFile) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    imagemBase64 = e.target.result; 
+                    salvarOuAtualizarProduto(id, nome, preco, imagemBase64);
+                };
+                reader.readAsDataURL(imagemFile);
+            } else {
+                if (!imagemBase64) {
+                    imagemBase64 = DEFAULT_IMAGE;
+                }
+                salvarOuAtualizarProduto(id, nome, preco, imagemBase64);
+            }
+        });
+
+        async function salvarOuAtualizarProduto(id, nome, preco, imagem) {
+            const dadosDoProduto = {
+                nome: nome,
+                preco: preco,
+                imagem: imagem,
+                criadoEm: firebase.firestore.FieldValue.serverTimestamp()
+            };
+
+            try {
+                if (id) {
+                    await db.collection("produtos").doc(id).update(dadosDoProduto);
+                    alert('Produto atualizado no Firebase com sucesso!');
+                } else {
+                    await db.collection("produtos").add(dadosDoProduto);
+                    alert('Novo produto cadastrado no Firebase com sucesso!');
+                }
+
+                limparFormulario();
+                await carregarProdutosDoFirestore(); 
+            } catch (error) {
+                console.error("Erro ao salvar no Firebase:", error);
+                alert("❌ Erro ao salvar produto. Verifique suas regras do Firestore.");
+            }
+        }
+
+        window.excluirProduto = async function(produtoId) {
+            if (confirm('Tem certeza de que deseja excluir este produto do Firebase?')) {
+                try {
+                    await db.collection("produtos").doc(produtoId).delete();
+                    
+                    carrinho = carrinho.filter(item => item.id !== produtoId);
+
+                    alert('Produto excluído do Firebase com sucesso!');
+                    
+                    await carregarProdutosDoFirestore();
+                    renderizarCarrinho();
+
+                } catch (error) {
+                    console.error("Erro ao excluir do Firebase:", error);
+                    alert("❌ Erro ao excluir produto. Verifique suas regras do Firestore.");
+                }
+            }
+        };
+        
+        // --- ABA PEDIDOS (ADMIN VIEW) ---
+
+        async function carregarPedidosDoFirestore() {
+            try {
+                // Busca os pedidos e ordena pela data mais recente
+                const snapshot = await db.collection("pedidos").orderBy("dataHora", "desc").get();
+                const pedidos = snapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+                renderizarPedidosAdmin(pedidos);
+            } catch (error) {
+                console.error("Erro ao carregar pedidos:", error);
+                document.getElementById('tabela-pedidos-corpo').innerHTML = '<tr><td colspan="6" style="color: red;">Erro ao carregar pedidos. Verifique as regras do Firebase.</td></tr>';
+            }
+        }
+
+        function renderizarPedidosAdmin(pedidos) {
+            const corpoTabela = document.getElementById('tabela-pedidos-corpo');
+            corpoTabela.innerHTML = '';
+
+            if (pedidos.length === 0) {
+                corpoTabela.innerHTML = '<tr><td colspan="6">Nenhum pedido recebido ainda.</td></tr>';
+                return;
+            }
+
+            pedidos.forEach(pedido => {
+                const tr = document.createElement('tr');
+                const itensResumo = pedido.itens.map(item => `${item.quantidade}x ${item.nome}`).join(', ');
+                const statusClass = `status-${pedido.status.toLowerCase()}`;
+                
+                tr.innerHTML = `
+                    <td>${pedido.id.substring(0, 4)}...</td>
+                    <td>${formatarData(pedido.dataHora)}</td>
+                    <td>${itensResumo}</td>
+                    <td>${formatarMoeda(pedido.totalGeral)}</td>
+                    <td class="${statusClass}">${pedido.status}</td>
+                    <td>
+                        <button class="btn-acao btn-editar" onclick="mudarStatusPedido('${pedido.id}', 'Processando')">Processar</button>
+                        <button class="btn-acao btn-excluir" onclick="mudarStatusPedido('${pedido.id}', 'Enviado')">Enviar</button>
+                    </td>
+                `;
+                corpoTabela.appendChild(tr);
+            });
+        }
+        
+        window.mudarStatusPedido = async function(pedidoId, novoStatus) {
+            try {
+                // Atualiza o campo 'status' do documento do pedido
+                await db.collection("pedidos").doc(pedidoId).update({
+                    status: novoStatus
+                });
+                alert(`Status do Pedido ${pedidoId.substring(0, 4)}... alterado para: ${novoStatus}`);
+                carregarPedidosDoFirestore(); // Recarrega a lista para atualizar a tabela
+            } catch (error) {
+                console.error("Erro ao atualizar status:", error);
+                alert("❌ Erro ao atualizar status do pedido.");
+            }
+        };
+
+
+        // --- 4. INICIALIZAÇÃO ---
+        document.addEventListener('DOMContentLoaded', () => {
+            carregarProdutosDoFirestore();
+            renderizarCarrinho();
+        });
+        
+    </script>
+</body>
+</html>
