@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel Admin - PINTANDO QUALIDADE</title>
+    <title>Catálogo Completo - PINTANDO QUALIDADE</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -13,22 +13,9 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
-        :root {
-            --primary: #1e3a8a;
-            --secondary: #3b82f6;
-            --accent: #fbbf24;
-            --success: #10b981;
-            --danger: #ef4444;
-            --warning: #f59e0b;
-            --light: #f8fafc;
-            --dark: #1e293b;
-            --gray: #64748b;
-            --light-gray: #e2e8f0;
-        }
-        
         body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
-            color: #2c3e50;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            color: #1e293b;
             line-height: 1.6;
             min-height: 100vh;
         }
@@ -36,18 +23,18 @@
         .container {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 15px;
         }
         
         /* Cabeçalho */
         .company-header {
-            background: linear-gradient(135deg, #1a2980 0%, #26d0ce 100%);
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
             color: white;
             padding: 25px 0;
             text-align: center;
-            border-radius: 0 0 15px 15px;
+            border-radius: 0 0 20px 20px;
             margin-bottom: 25px;
-            box-shadow: 0 8px 25px rgba(26, 41, 128, 0.2);
+            box-shadow: 0 10px 30px rgba(30, 58, 138, 0.3);
             position: relative;
             overflow: hidden;
         }
@@ -59,13 +46,13 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.05)"/></svg>');
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.08)"/></svg>');
             background-size: cover;
         }
         
         .company-logo {
             font-size: 2.2rem;
-            font-weight: 800;
+            font-weight: 900;
             margin-bottom: 10px;
             display: flex;
             align-items: center;
@@ -73,6 +60,7 @@
             gap: 15px;
             position: relative;
             z-index: 1;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
         }
         
         @media (max-width: 768px) {
@@ -84,30 +72,33 @@
         }
         
         .company-logo i {
-            color: #00ff88;
+            color: #fbbf24;
         }
         
         .company-tagline {
             font-size: 1.1rem;
             opacity: 0.95;
-            max-width: 800px;
-            margin: 0 auto;
+            max-width: 900px;
+            margin: 0 auto 20px;
             position: relative;
             z-index: 1;
+            font-weight: 300;
+            padding: 0 15px;
         }
         
-        /* Menu Admin */
-        .admin-menu {
+        /* Menu Principal */
+        .main-menu {
             display: flex;
             justify-content: center;
             gap: 10px;
-            margin-top: 20px;
+            margin-top: 15px;
             flex-wrap: wrap;
             position: relative;
             z-index: 1;
+            padding: 0 10px;
         }
         
-        .menu-btn {
+        .main-btn {
             background: rgba(255, 255, 255, 0.15);
             color: white;
             border: 2px solid rgba(255, 255, 255, 0.3);
@@ -123,26 +114,35 @@
             backdrop-filter: blur(10px);
         }
         
-        .menu-btn:hover {
+        @media (max-width: 768px) {
+            .main-btn {
+                padding: 8px 15px;
+                font-size: 0.8rem;
+                width: calc(50% - 10px);
+                justify-content: center;
+            }
+        }
+        
+        .main-btn:hover {
             background: rgba(255, 255, 255, 0.25);
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
         
-        .menu-btn.active {
+        .main-btn.active {
             background: white;
-            color: #1a2980;
+            color: #1e3a8a;
             border-color: white;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
         
         /* Conteúdo Principal */
-        .admin-content {
+        .main-content {
             display: none;
             animation: fadeIn 0.5s ease;
         }
         
-        .admin-content.active {
+        .main-content.active {
             display: block;
         }
         
@@ -151,265 +151,120 @@
             to { opacity: 1; }
         }
         
-        /* Cards de Estatísticas */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-        
-        .stat-card {
-            background: white;
-            border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-            border-left: 5px solid #26d0ce;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            transition: transform 0.3s ease;
-        }
-        
-        .stat-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .stat-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            color: white;
-            background: linear-gradient(135deg, #1a2980, #26d0ce);
-        }
-        
-        .stat-info h3 {
-            font-size: 2rem;
-            color: #1a2980;
-            margin-bottom: 5px;
-        }
-        
-        .stat-info p {
-            color: #64748b;
-            font-size: 0.9rem;
-        }
-        
-        /* Tabelas */
-        .table-container {
+        /* Painel Lateral Responsivo */
+        .sidebar {
             background: white;
             border-radius: 15px;
-            padding: 25px;
+            padding: 20px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-            margin-bottom: 30px;
-            overflow-x: auto;
-        }
-        
-        .table-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-        
-        .table-title {
-            font-size: 1.5rem;
-            color: #1a2980;
-        }
-        
-        .admin-table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 800px;
-        }
-        
-        .admin-table thead {
-            background: linear-gradient(135deg, #1a2980, #26d0ce);
-        }
-        
-        .admin-table th {
-            color: white;
-            padding: 15px;
-            text-align: left;
-            font-weight: 600;
-            font-size: 0.95rem;
-        }
-        
-        .admin-table td {
-            padding: 15px;
-            border-bottom: 1px solid #e2e8f0;
-            color: #475569;
-        }
-        
-        .admin-table tr:nth-child(even) {
-            background-color: #f8fafc;
-        }
-        
-        .admin-table tr:hover {
-            background-color: #f0f9ff;
-        }
-        
-        /* Formulários */
-        .form-container {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-            max-width: 800px;
-            margin: 0 auto 30px;
-        }
-        
-        .form-title {
-            font-size: 1.6rem;
-            color: #1a2980;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #26d0ce;
-        }
-        
-        .form-group {
+            height: fit-content;
+            position: sticky;
+            top: 20px;
             margin-bottom: 20px;
         }
         
-        .form-label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #1a2980;
+        @media (max-width: 1024px) {
+            .sidebar {
+                position: static;
+            }
         }
         
-        .form-control {
-            width: 100%;
+        .sidebar-title {
+            font-size: 1.4rem;
+            color: #1e3a8a;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #fbbf24;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .category-list {
+            list-style: none;
+        }
+        
+        .category-item {
             padding: 12px 15px;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: border-color 0.3s ease;
+            margin-bottom: 8px;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
         }
         
-        .form-control:focus {
-            outline: none;
-            border-color: #26d0ce;
+        .category-item:hover {
+            background: #f0f9ff;
+            transform: translateX(5px);
+            border-left-color: #3b82f6;
         }
         
-        .form-row {
+        .category-item.active {
+            background: linear-gradient(135deg, #eff6ff, #dbeafe);
+            border-left-color: #fbbf24;
+            font-weight: 600;
+            color: #1e3a8a;
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.1);
+        }
+        
+        /* Grid de Produtos Responsivo */
+        .products-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 20px;
+            margin-top: 20px;
         }
         
         @media (max-width: 768px) {
-            .form-row {
+            .products-grid {
                 grid-template-columns: 1fr;
             }
         }
         
-        /* Upload de Imagens */
-        .upload-area {
-            border: 2px dashed #cbd5e1;
+        /* Card de Produto Responsivo */
+        .product-card {
+            background: white;
             border-radius: 12px;
-            padding: 40px 20px;
-            text-align: center;
-            cursor: pointer;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            border: 2px solid #e2e8f0;
             transition: all 0.3s ease;
-            margin-bottom: 25px;
-            background: #f8fafc;
-        }
-        
-        .upload-area:hover {
-            border-color: #26d0ce;
-            background: #f0f9ff;
-        }
-        
-        .upload-area.dragover {
-            border-color: #10b981;
-            background: #f0fdf4;
-        }
-        
-        .upload-icon {
-            font-size: 2.5rem;
-            color: #26d0ce;
-            margin-bottom: 15px;
-        }
-        
-        .upload-text h3 {
-            color: #1a2980;
-            margin-bottom: 5px;
-        }
-        
-        .upload-text p {
-            color: #64748b;
-            margin-bottom: 15px;
-        }
-        
-        .upload-btn {
-            display: inline-block;
-            background: linear-gradient(135deg, #1a2980, #26d0ce);
-            color: white;
-            padding: 12px 25px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            border: none;
-            font-size: 1rem;
-            transition: transform 0.3s ease;
-        }
-        
-        .upload-btn:hover {
-            transform: translateY(-2px);
-        }
-        
-        .file-input {
-            display: none;
-        }
-        
-        /* Galeria de Imagens */
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-        }
-        
-        .gallery-item {
             position: relative;
-            border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            aspect-ratio: 1;
         }
         
-        .gallery-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(30, 58, 138, 0.15);
+            border-color: #3b82f6;
         }
         
-        .gallery-remove {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            background: rgba(239, 68, 68, 0.9);
+        .product-ref {
+            display: inline-block;
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
             color: white;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-weight: 700;
             font-size: 0.9rem;
-            border: 2px solid white;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 10px rgba(30, 58, 138, 0.3);
         }
         
-        /* Botões */
-        .btn {
-            padding: 12px 24px;
+        .product-name {
+            font-size: 1.2rem;
+            color: #1e293b;
+            margin-bottom: 15px;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+        
+        /* Botões Responsivos */
+        .action-btn {
+            padding: 10px 15px;
             border-radius: 8px;
             font-weight: 600;
             cursor: pointer;
@@ -418,19 +273,19 @@
             gap: 8px;
             transition: all 0.3s ease;
             border: none;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             text-decoration: none;
         }
         
         .btn-primary {
-            background: linear-gradient(135deg, #1a2980, #26d0ce);
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
             color: white;
-            box-shadow: 0 4px 10px rgba(26, 41, 128, 0.3);
+            box-shadow: 0 4px 10px rgba(30, 58, 138, 0.3);
         }
         
         .btn-primary:hover {
-            background: linear-gradient(135deg, #15225e, #1fb9b7);
-            box-shadow: 0 6px 15px rgba(26, 41, 128, 0.4);
+            background: linear-gradient(135deg, #15225e, #2563eb);
+            box-shadow: 0 6px 15px rgba(30, 58, 138, 0.4);
             transform: translateY(-2px);
         }
         
@@ -458,52 +313,241 @@
             transform: translateY(-2px);
         }
         
-        .btn-warning {
-            background: linear-gradient(135deg, #f59e0b, #fbbf24);
+        /* Painel Administrativo */
+        .admin-panel {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .admin-panel.active {
+            display: block;
+        }
+        
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .admin-title {
+            font-size: 1.6rem;
+            color: #1e3a8a;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        /* Tabelas Responsivas */
+        .table-container {
+            overflow-x: auto;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+            margin-bottom: 20px;
+        }
+        
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 700px;
+        }
+        
+        .admin-table thead {
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+        }
+        
+        .admin-table th {
             color: white;
-            box-shadow: 0 4px 10px rgba(245, 158, 11, 0.3);
-        }
-        
-        .btn-warning:hover {
-            background: linear-gradient(135deg, #d97706, #eab308);
-            box-shadow: 0 6px 15px rgba(245, 158, 11, 0.4);
-            transform: translateY(-2px);
-        }
-        
-        /* Badges */
-        .badge {
-            display: inline-block;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
+            padding: 15px;
+            text-align: left;
             font-weight: 600;
+            font-size: 0.9rem;
         }
         
-        .badge-success {
-            background: rgba(16, 185, 129, 0.1);
-            color: #10b981;
+        .admin-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e2e8f0;
+            color: #475569;
         }
         
-        .badge-danger {
-            background: rgba(239, 68, 68, 0.1);
-            color: #ef4444;
+        .admin-table tr:nth-child(even) {
+            background-color: #f8fafc;
         }
         
-        .badge-info {
-            background: rgba(59, 130, 246, 0.1);
+        /* Formulários Responsivos */
+        .form-container {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            margin-bottom: 20px;
+        }
+        
+        .form-title {
+            font-size: 1.4rem;
+            color: #1e3a8a;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #fbbf24;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+        
+        /* Upload de Imagens */
+        .upload-area {
+            border: 2px dashed #cbd5e1;
+            border-radius: 12px;
+            padding: 30px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+            background: #f8fafc;
+        }
+        
+        .upload-area:hover {
+            border-color: #3b82f6;
+            background: #f0f9ff;
+        }
+        
+        .upload-icon {
+            font-size: 2.5rem;
             color: #3b82f6;
+            margin-bottom: 15px;
         }
         
-        /* Ações */
-        .actions {
+        .file-input {
+            display: none;
+        }
+        
+        /* Galeria de Imagens Responsiva */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 12px;
+            margin-top: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            }
+        }
+        
+        .gallery-item {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            aspect-ratio: 1;
+        }
+        
+        .gallery-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        /* Modal Responsivo */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 15px;
+            display: none;
+        }
+        
+        .modal-overlay.active {
+            display: flex;
+        }
+        
+        .modal {
+            background: white;
+            border-radius: 15px;
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Notificação */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            z-index: 1001;
+            transform: translateX(150%);
+            transition: transform 0.5s ease;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification.success {
+            background: linear-gradient(135deg, #10b981, #34d399);
+        }
+        
+        .notification.error {
+            background: linear-gradient(135deg, #ef4444, #f87171);
+        }
+        
+        /* Ações em Tabela */
+        .table-actions {
             display: flex;
             gap: 8px;
             flex-wrap: wrap;
         }
         
-        .action-btn {
-            width: 36px;
-            height: 36px;
+        .action-icon {
+            width: 32px;
+            height: 32px;
             border-radius: 8px;
             display: flex;
             align-items: center;
@@ -533,281 +577,123 @@
             color: white;
         }
         
-        .action-view {
+        /* Layout Responsivo com Grid */
+        .catalog-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 25px;
+        }
+        
+        @media (max-width: 1024px) {
+            .catalog-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Badges */
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .badge-success {
             background: rgba(16, 185, 129, 0.1);
             color: #10b981;
         }
         
-        .action-view:hover {
-            background: #10b981;
-            color: white;
+        .badge-danger {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
         }
         
-        /* Modal */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.7);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            padding: 20px;
+        .badge-info {
+            background: rgba(59, 130, 246, 0.1);
+            color: #3b82f6;
+        }
+        
+        /* Menu Mobile */
+        .mobile-menu-toggle {
             display: none;
-        }
-        
-        .modal-overlay.active {
-            display: flex;
-        }
-        
-        .modal {
-            background: white;
-            border-radius: 15px;
-            width: 100%;
-            max-width: 500px;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-        }
-        
-        .modal-header {
-            padding: 20px 25px;
-            border-bottom: 2px solid #e2e8f0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .modal-title {
-            font-size: 1.4rem;
-            color: #1a2980;
-        }
-        
-        .modal-close {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            color: #64748b;
-            cursor: pointer;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.3s ease;
-        }
-        
-        .modal-close:hover {
-            background: #e2e8f0;
-        }
-        
-        .modal-body {
-            padding: 25px;
-        }
-        
-        .modal-footer {
-            padding: 20px 25px;
-            border-top: 2px solid #e2e8f0;
-            display: flex;
-            justify-content: flex-end;
-            gap: 15px;
-        }
-        
-        /* Notificação */
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 15px 20px;
-            border-radius: 10px;
+            background: #3b82f6;
             color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
             font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            z-index: 1001;
-            transform: translateX(150%);
-            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-        }
-        
-        .notification.show {
-            transform: translateX(0);
-        }
-        
-        .notification.success {
-            background: linear-gradient(135deg, #10b981, #34d399);
-        }
-        
-        .notification.error {
-            background: linear-gradient(135deg, #ef4444, #f87171);
-        }
-        
-        .notification.warning {
-            background: linear-gradient(135deg, #f59e0b, #fbbf24);
-        }
-        
-        /* Switch */
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 60px;
-            height: 30px;
-        }
-        
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-        
-        .slider {
-            position: absolute;
             cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #cbd5e1;
-            transition: .4s;
-            border-radius: 34px;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 999;
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3);
         }
         
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 22px;
-            width: 22px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-        }
-        
-        input:checked + .slider {
-            background-color: #10b981;
-        }
-        
-        input:checked + .slider:before {
-            transform: translateX(30px);
-        }
-        
-        /* Responsividade */
         @media (max-width: 768px) {
-            .container {
-                padding: 15px;
-            }
-            
-            .company-header {
-                padding: 20px 0;
-            }
-            
-            .company-logo {
-                font-size: 1.5rem;
-            }
-            
-            .company-tagline {
-                font-size: 0.9rem;
-                padding: 0 15px;
-            }
-            
-            .admin-menu {
-                gap: 8px;
-            }
-            
-            .menu-btn {
-                padding: 8px 15px;
-                font-size: 0.8rem;
-            }
-            
-            .table-container {
-                padding: 15px;
-            }
-            
-            .table-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            
-            .form-container {
-                padding: 20px;
-            }
-            
-            .form-title {
-                font-size: 1.3rem;
-            }
-            
-            .stat-card {
-                padding: 20px;
-            }
-            
-            .stat-info h3 {
-                font-size: 1.5rem;
-            }
-            
-            .modal {
-                max-width: 100%;
+            .mobile-menu-toggle {
+                display: block;
             }
         }
         
-        /* Produto com imagem */
-        .product-with-image {
+        /* Estatísticas */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border-left: 5px solid #3b82f6;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 15px;
+            transition: transform 0.3s ease;
         }
         
-        .product-thumb {
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-icon {
             width: 50px;
             height: 50px;
-            border-radius: 8px;
-            object-fit: cover;
-            border: 2px solid #e2e8f0;
-        }
-        
-        /* Barra de Busca */
-        .search-box {
+            border-radius: 50%;
             display: flex;
-            gap: 10px;
             align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            color: white;
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
         }
         
-        .search-input {
-            padding: 10px 15px;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 0.95rem;
-            min-width: 250px;
+        .stat-info h3 {
+            font-size: 1.8rem;
+            color: #1e3a8a;
+            margin-bottom: 5px;
         }
         
-        @media (max-width: 768px) {
-            .search-box {
-                width: 100%;
-            }
-            
-            .search-input {
-                min-width: auto;
-                flex: 1;
-            }
-        }
-        
-        /* Mensagens Vazias */
-        .empty-message {
-            text-align: center;
-            padding: 40px 20px;
+        .stat-info p {
             color: #64748b;
+            font-size: 0.85rem;
         }
         
-        .empty-message i {
-            font-size: 3rem;
-            margin-bottom: 15px;
-            color: #cbd5e1;
+        /* Imagem do Produto */
+        .product-image {
+            width: 100%;
+            max-width: 300px;
+            height: 200px;
+            border-radius: 10px;
+            object-fit: cover;
+            margin: 0 auto 20px;
             display: block;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
@@ -817,352 +703,372 @@
         <div class="container">
             <div class="company-logo">
                 <i class="fas fa-paint-roller"></i>
-                PAINEL ADMINISTRATIVO
+                PINTANDO QUALIDADE
             </div>
-            <p class="company-tagline">Gerencie produtos, categorias, imagens e configurações do catálogo</p>
+            <p class="company-tagline">Soluções completas em equipamentos e acessórios para pintura industrial e automotiva</p>
             
-            <!-- Menu de Navegação -->
-            <div class="admin-menu">
-                <button class="menu-btn active" data-page="dashboard">
-                    <i class="fas fa-tachometer-alt"></i> Dashboard
+            <div class="main-menu">
+                <button class="main-btn active" data-page="catalog">
+                    <i class="fas fa-store"></i> Catálogo
                 </button>
-                <button class="menu-btn" data-page="products">
-                    <i class="fas fa-box"></i> Produtos
-                </button>
-                <button class="menu-btn" data-page="categories">
-                    <i class="fas fa-list"></i> Categorias
-                </button>
-                <button class="menu-btn" data-page="images">
-                    <i class="fas fa-images"></i> Imagens
-                </button>
-                <button class="menu-btn" data-page="users">
-                    <i class="fas fa-users"></i> Usuários
-                </button>
-                <button class="menu-btn" data-page="settings">
-                    <i class="fas fa-cog"></i> Configurações
+                <button class="main-btn" data-page="admin">
+                    <i class="fas fa-user-cog"></i> Administrativo
                 </button>
             </div>
         </div>
     </header>
     
     <main class="container">
-        <!-- Dashboard -->
-        <div class="admin-content active" id="dashboard-page">
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-icon">
-                        <i class="fas fa-box"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h3 id="total-products">48</h3>
-                        <p>Produtos Cadastrados</p>
-                    </div>
-                </div>
-                
-                <div class="stat-card">
-                    <div class="stat-icon">
+        <!-- Catálogo -->
+        <div class="main-content active" id="catalog-page">
+            <div class="catalog-layout">
+                <!-- Sidebar -->
+                <div class="sidebar">
+                    <h2 class="sidebar-title">
                         <i class="fas fa-list"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h3 id="total-categories">7</h3>
-                        <p>Categorias</p>
-                    </div>
+                        Categorias
+                    </h2>
+                    <ul class="category-list">
+                        <li class="category-item active" data-category="all">
+                            <div><i class="fas fa-th"></i></div>
+                            <div>Todos os Produtos</div>
+                        </li>
+                        <li class="category-item" data-category="pistols-conventional">
+                            <div><i class="fas fa-spray-can"></i></div>
+                            <div>Pistolas Convencionais</div>
+                        </li>
+                        <li class="category-item" data-category="pistols-airless">
+                            <div><i class="fas fa-wind"></i></div>
+                            <div>Pistolas Airless</div>
+                        </li>
+                        <li class="category-item" data-category="nozzles-xhd">
+                            <div><i class="fas fa-filter"></i></div>
+                            <div>Bicos XHD</div>
+                        </li>
+                        <li class="category-item" data-category="bombs">
+                            <div><i class="fas fa-oil-can"></i></div>
+                            <div>Bombas</div>
+                        </li>
+                        <li class="category-item" data-category="tanks">
+                            <div><i class="fas fa-fill-drip"></i></div>
+                            <div>Tanques</div>
+                        </li>
+                        <li class="category-item" data-category="tools">
+                            <div><i class="fas fa-tools"></i></div>
+                            <div>Ferramentas</div>
+                        </li>
+                    </ul>
                 </div>
                 
-                <div class="stat-card">
-                    <div class="stat-icon">
-                        <i class="fas fa-images"></i>
+                <!-- Conteúdo do Catálogo -->
+                <div>
+                    <div style="background: white; border-radius: 15px; padding: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); margin-bottom: 20px;">
+                        <h1 id="category-title" style="color: #1e3a8a; font-size: 1.8rem; margin-bottom: 10px;">Todos os Produtos</h1>
+                        <p id="category-description" style="color: #64748b;">Catálogo completo de equipamentos para pintura</p>
                     </div>
-                    <div class="stat-info">
-                        <h3 id="total-images">12</h3>
-                        <p>Imagens Enviadas</p>
-                    </div>
-                </div>
-                
-                <div class="stat-card">
-                    <div class="stat-icon">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h3 id="total-users">3</h3>
-                        <p>Usuários Ativos</p>
+                    
+                    <div class="products-grid" id="products-grid">
+                        <!-- Produtos carregados via JavaScript -->
                     </div>
                 </div>
-            </div>
-            
-            <div class="table-container">
-                <div class="table-header">
-                    <h2 class="table-title">Últimos Produtos Adicionados</h2>
-                    <button class="btn btn-primary" onclick="navigateTo('products')">
-                        <i class="fas fa-eye"></i> Ver Todos
-                    </button>
-                </div>
-                <table class="admin-table">
-                    <thead>
-                        <tr>
-                            <th>REF</th>
-                            <th>Produto</th>
-                            <th>Categoria</th>
-                            <th>Data</th>
-                            <th>Status</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody id="recent-products">
-                        <!-- Últimos produtos carregados via JS -->
-                    </tbody>
-                </table>
             </div>
         </div>
         
-        <!-- Página de Produtos -->
-        <div class="admin-content" id="products-page">
-            <div class="table-container">
-                <div class="table-header">
-                    <h2 class="table-title">Gerenciar Produtos</h2>
-                    <div class="search-box">
-                        <input type="text" class="search-input" placeholder="Buscar produto..." id="product-search">
-                        <button class="btn btn-primary" onclick="searchProducts()">
+        <!-- Painel Administrativo -->
+        <div class="main-content" id="admin-page">
+            <div class="admin-panel active">
+                <div class="admin-header">
+                    <h1 class="admin-title">
+                        <i class="fas fa-user-cog"></i>
+                        Painel Administrativo
+                    </h1>
+                    <div>
+                        <button class="action-btn btn-primary" onclick="showDashboard()">
+                            <i class="fas fa-tachometer-alt"></i> Dashboard
+                        </button>
+                        <button class="action-btn btn-danger" onclick="logout()">
+                            <i class="fas fa-sign-out-alt"></i> Sair
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Dashboard -->
+                <div id="admin-dashboard">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-box"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="total-products">48</h3>
+                                <p>Produtos</p>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-list"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="total-categories">7</h3>
+                                <p>Categorias</p>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-images"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="total-images">12</h3>
+                                <p>Imagens</p>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="total-users">3</h3>
+                                <p>Usuários</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Menu do Admin -->
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 25px;">
+                        <button class="action-btn btn-primary" onclick="showProductsAdmin()" style="justify-content: center;">
+                            <i class="fas fa-box"></i> Gerenciar Produtos
+                        </button>
+                        <button class="action-btn btn-primary" onclick="showCategoriesAdmin()" style="justify-content: center;">
+                            <i class="fas fa-list"></i> Gerenciar Categorias
+                        </button>
+                        <button class="action-btn btn-primary" onclick="showImagesAdmin()" style="justify-content: center;">
+                            <i class="fas fa-images"></i> Gerenciar Imagens
+                        </button>
+                        <button class="action-btn btn-primary" onclick="showSettingsAdmin()" style="justify-content: center;">
+                            <i class="fas fa-cog"></i> Configurações
+                        </button>
+                    </div>
+                    
+                    <!-- Últimos Produtos -->
+                    <div class="table-container">
+                        <h3 style="padding: 15px; color: #1e3a8a; margin: 0;">Últimos Produtos</h3>
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>REF</th>
+                                    <th>Produto</th>
+                                    <th>Categoria</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recent-products">
+                                <!-- Últimos produtos carregados via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Gerenciar Produtos -->
+                <div id="admin-products" style="display: none;">
+                    <div class="admin-header">
+                        <h2 class="admin-title">
+                            <i class="fas fa-box"></i>
+                            Gerenciar Produtos
+                        </h2>
+                        <button class="action-btn btn-success" onclick="openProductModal()">
+                            <i class="fas fa-plus"></i> Novo Produto
+                        </button>
+                    </div>
+                    
+                    <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
+                        <input type="text" class="form-control" placeholder="Buscar produto..." id="product-search" style="flex: 1; min-width: 200px;">
+                        <button class="action-btn btn-primary" onclick="searchProducts()">
                             <i class="fas fa-search"></i>
                         </button>
-                        <button class="btn btn-success" onclick="openProductModal()">
-                            <i class="fas fa-plus"></i> Novo
+                    </div>
+                    
+                    <div class="table-container">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>REF</th>
+                                    <th>Produto</th>
+                                    <th>Categoria</th>
+                                    <th>Marca</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="products-list">
+                                <!-- Produtos carregados via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Gerenciar Categorias -->
+                <div id="admin-categories" style="display: none;">
+                    <div class="admin-header">
+                        <h2 class="admin-title">
+                            <i class="fas fa-list"></i>
+                            Gerenciar Categorias
+                        </h2>
+                        <button class="action-btn btn-success" onclick="openCategoryModal()">
+                            <i class="fas fa-plus"></i> Nova Categoria
                         </button>
                     </div>
-                </div>
-                <table class="admin-table">
-                    <thead>
-                        <tr>
-                            <th>REF</th>
-                            <th>Produto</th>
-                            <th>Categoria</th>
-                            <th>Marca</th>
-                            <th>Preço</th>
-                            <th>Status</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody id="products-list">
-                        <!-- Produtos carregados via JS -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        
-        <!-- Página de Categorias -->
-        <div class="admin-content" id="categories-page">
-            <div class="table-container">
-                <div class="table-header">
-                    <h2 class="table-title">Gerenciar Categorias</h2>
-                    <button class="btn btn-success" onclick="openCategoryModal()">
-                        <i class="fas fa-plus"></i> Nova Categoria
-                    </button>
-                </div>
-                <table class="admin-table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nome</th>
-                            <th>Descrição</th>
-                            <th>Produtos</th>
-                            <th>Status</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody id="categories-list">
-                        <!-- Categorias carregadas via JS -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        
-        <!-- Página de Imagens -->
-        <div class="admin-content" id="images-page">
-            <div class="form-container">
-                <h2 class="form-title">Enviar Imagens do Celular/Computador</h2>
-                
-                <div class="upload-area" id="upload-area">
-                    <div class="upload-icon">
-                        <i class="fas fa-cloud-upload-alt"></i>
-                    </div>
-                    <div class="upload-text">
-                        <h3>Arraste e solte imagens aqui</h3>
-                        <p>ou clique para selecionar do seu dispositivo</p>
-                        <p style="font-size: 0.9rem; margin-top: 10px;">Suporta JPG, PNG, GIF até 10MB cada</p>
-                    </div>
-                    <input type="file" class="file-input" id="image-input" accept="image/*" multiple>
-                    <button class="upload-btn" onclick="document.getElementById('image-input').click()">
-                        <i class="fas fa-image"></i> Selecionar Imagens
-                    </button>
-                </div>
-                
-                <div class="gallery-grid" id="image-preview">
-                    <!-- Prévia das imagens -->
-                </div>
-                
-                <div style="text-align: center; margin-top: 30px;">
-                    <button class="btn btn-success" onclick="uploadImages()">
-                        <i class="fas fa-upload"></i> Enviar Todas as Imagens
-                    </button>
-                </div>
-            </div>
-            
-            <div class="table-container">
-                <div class="table-header">
-                    <h2 class="table-title">Galeria de Imagens</h2>
-                </div>
-                <div class="gallery-grid" id="gallery-images">
-                    <!-- Galeria de imagens -->
-                </div>
-            </div>
-        </div>
-        
-        <!-- Página de Usuários -->
-        <div class="admin-content" id="users-page">
-            <div class="table-container">
-                <div class="table-header">
-                    <h2 class="table-title">Gerenciar Usuários</h2>
-                    <button class="btn btn-success" onclick="openUserModal()">
-                        <i class="fas fa-user-plus"></i> Novo Usuário
-                    </button>
-                </div>
-                <table class="admin-table">
-                    <thead>
-                        <tr>
-                            <th>Nome</th>
-                            <th>E-mail</th>
-                            <th>Cargo</th>
-                            <th>Último Acesso</th>
-                            <th>Status</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody id="users-list">
-                        <!-- Usuários carregados via JS -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        
-        <!-- Página de Configurações -->
-        <div class="admin-content" id="settings-page">
-            <div class="form-container">
-                <h2 class="form-title">Configurações do Sistema</h2>
-                
-                <div class="form-group">
-                    <label class="form-label">Nome da Empresa</label>
-                    <input type="text" class="form-control" id="company-name" value="PINTANDO QUALIDADE">
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label">Telefone de Contato</label>
-                        <input type="text" class="form-control" id="company-phone" value="(11) 3456-7890">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">E-mail de Contato</label>
-                        <input type="email" class="form-control" id="company-email" value="vendas@pintandoqualidade.com.br">
+                    
+                    <div class="table-container">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nome</th>
+                                    <th>Descrição</th>
+                                    <th>Produtos</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="categories-list">
+                                <!-- Categorias carregadas via JS -->
+                            </tbody>
+                        </table>
                     </div>
                 </div>
                 
-                <div class="form-group">
-                    <label class="form-label">Endereço</label>
-                    <textarea class="form-control" id="company-address" rows="3">São Paulo - SP</textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">Logotipo da Empresa</label>
-                    <div class="upload-area" style="padding: 20px;" onclick="document.getElementById('logo-input').click()">
-                        <div class="upload-icon">
-                            <i class="fas fa-image"></i>
+                <!-- Gerenciar Imagens -->
+                <div id="admin-images" style="display: none;">
+                    <div class="admin-header">
+                        <h2 class="admin-title">
+                            <i class="fas fa-images"></i>
+                            Gerenciar Imagens
+                        </h2>
+                    </div>
+                    
+                    <div class="form-container">
+                        <h3 class="form-title">Enviar Imagens do Celular/Computador</h3>
+                        
+                        <div class="upload-area" id="upload-area" onclick="document.getElementById('image-input').click()">
+                            <div class="upload-icon">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                            </div>
+                            <div style="color: #64748b;">
+                                <p><strong>Clique para selecionar imagens</strong></p>
+                                <p>ou arraste e solte aqui</p>
+                                <p style="font-size: 0.9rem; margin-top: 10px;">Suporta JPG, PNG, GIF até 10MB</p>
+                            </div>
+                            <input type="file" class="file-input" id="image-input" accept="image/*" multiple>
                         </div>
-                        <p>Clique para alterar o logotipo</p>
-                        <input type="file" class="file-input" id="logo-input" accept="image/*">
+                        
+                        <div class="gallery-grid" id="image-preview">
+                            <!-- Prévia das imagens -->
+                        </div>
+                        
+                        <div style="text-align: center; margin-top: 20px;">
+                            <button class="action-btn btn-success" onclick="uploadImages()">
+                                <i class="fas fa-upload"></i> Enviar Todas as Imagens
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-container">
+                        <h3 class="form-title">Galeria de Imagens</h3>
+                        <div class="gallery-grid" id="gallery-images">
+                            <!-- Galeria de imagens -->
+                        </div>
                     </div>
                 </div>
                 
-                <div class="form-group">
-                    <label class="form-label">Manutenção do Sistema</label>
-                    <div style="display: flex; align-items: center; gap: 15px;">
-                        <label class="switch">
-                            <input type="checkbox" id="maintenance-mode">
-                            <span class="slider"></span>
-                        </label>
-                        <span>Modo de Manutenção Ativado</span>
+                <!-- Configurações -->
+                <div id="admin-settings" style="display: none;">
+                    <div class="admin-header">
+                        <h2 class="admin-title">
+                            <i class="fas fa-cog"></i>
+                            Configurações do Sistema
+                        </h2>
                     </div>
-                    <p style="color: #64748b; font-size: 0.9rem; margin-top: 5px;">Quando ativado, o site ficará indisponível para visitantes.</p>
-                </div>
-                
-                <div style="text-align: center; margin-top: 30px;">
-                    <button class="btn btn-success" onclick="saveSettings()">
-                        <i class="fas fa-save"></i> Salvar Configurações
-                    </button>
+                    
+                    <div class="form-container">
+                        <div class="form-group">
+                            <label class="form-label">Nome da Empresa</label>
+                            <input type="text" class="form-control" id="company-name" value="PINTANDO QUALIDADE">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Telefone de Contato</label>
+                            <input type="text" class="form-control" id="company-phone" value="(11) 3456-7890">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">E-mail de Contato</label>
+                            <input type="email" class="form-control" id="company-email" value="vendas@pintandoqualidade.com.br">
+                        </div>
+                        
+                        <div style="text-align: center; margin-top: 25px;">
+                            <button class="action-btn btn-success" onclick="saveSettings()">
+                                <i class="fas fa-save"></i> Salvar Configurações
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+        
+        <!-- Botão Menu Mobile -->
+        <button class="mobile-menu-toggle" id="mobile-menu-toggle">
+            <i class="fas fa-bars"></i> Menu
+        </button>
     </main>
     
     <!-- Modal de Produto -->
     <div class="modal-overlay" id="product-modal">
         <div class="modal">
-            <div class="modal-header">
-                <h3 class="modal-title" id="product-modal-title">Novo Produto</h3>
-                <button class="modal-close" onclick="closeProductModal()">&times;</button>
+            <div style="padding: 20px; border-bottom: 2px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center;">
+                <h3 style="color: #1e3a8a; font-size: 1.4rem;" id="product-modal-title">Novo Produto</h3>
+                <button onclick="closeProductModal()" style="background: none; border: none; font-size: 1.5rem; color: #64748b; cursor: pointer;">&times;</button>
             </div>
-            <div class="modal-body">
+            <div style="padding: 20px;">
                 <div class="form-group">
-                    <label class="form-label">Código de Referência (REF)</label>
-                    <input type="text" class="form-control" id="product-ref" required>
+                    <label class="form-label">Código (REF)</label>
+                    <input type="text" class="form-control" id="product-ref">
                 </div>
                 
                 <div class="form-group">
                     <label class="form-label">Nome do Produto</label>
-                    <input type="text" class="form-control" id="product-name" required>
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label">Categoria</label>
-                        <select class="form-control" id="product-category" required>
-                            <option value="">Selecione uma categoria</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Marca</label>
-                        <input type="text" class="form-control" id="product-brand">
-                    </div>
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label">Preço (R$)</label>
-                        <input type="number" class="form-control" id="product-price" step="0.01">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Estoque</label>
-                        <input type="number" class="form-control" id="product-stock">
-                    </div>
+                    <input type="text" class="form-control" id="product-name">
                 </div>
                 
                 <div class="form-group">
-                    <label class="form-label">Descrição Detalhada</label>
+                    <label class="form-label">Categoria</label>
+                    <select class="form-control" id="product-category">
+                        <option value="">Selecione uma categoria</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Marca</label>
+                    <input type="text" class="form-control" id="product-brand">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Descrição</label>
                     <textarea class="form-control" id="product-description" rows="3"></textarea>
                 </div>
                 
                 <div class="form-group">
-                    <label class="form-label">Status</label>
-                    <div style="display: flex; align-items: center; gap: 15px;">
-                        <label class="switch">
-                            <input type="checkbox" id="product-status" checked>
-                            <span class="slider"></span>
-                        </label>
-                        <span>Produto Ativo</span>
+                    <label class="form-label">Imagens do Produto</label>
+                    <div class="upload-area" onclick="document.getElementById('product-image-input').click()" style="padding: 15px;">
+                        <i class="fas fa-camera" style="color: #3b82f6; font-size: 1.5rem; margin-bottom: 10px;"></i>
+                        <p style="color: #64748b; margin: 0;">Clique para adicionar imagens</p>
+                        <input type="file" class="file-input" id="product-image-input" accept="image/*" multiple>
                     </div>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button class="btn btn-primary" onclick="closeProductModal()">Cancelar</button>
-                <button class="btn btn-success" onclick="saveProduct()">Salvar Produto</button>
+            <div style="padding: 20px; border-top: 2px solid #e2e8f0; display: flex; justify-content: flex-end; gap: 10px;">
+                <button class="action-btn btn-primary" onclick="closeProductModal()">Cancelar</button>
+                <button class="action-btn btn-success" onclick="saveProduct()">Salvar Produto</button>
             </div>
         </div>
     </div>
@@ -1170,14 +1076,14 @@
     <!-- Modal de Categoria -->
     <div class="modal-overlay" id="category-modal">
         <div class="modal">
-            <div class="modal-header">
-                <h3 class="modal-title" id="category-modal-title">Nova Categoria</h3>
-                <button class="modal-close" onclick="closeCategoryModal()">&times;</button>
+            <div style="padding: 20px; border-bottom: 2px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center;">
+                <h3 style="color: #1e3a8a; font-size: 1.4rem;" id="category-modal-title">Nova Categoria</h3>
+                <button onclick="closeCategoryModal()" style="background: none; border: none; font-size: 1.5rem; color: #64748b; cursor: pointer;">&times;</button>
             </div>
-            <div class="modal-body">
+            <div style="padding: 20px;">
                 <div class="form-group">
                     <label class="form-label">Nome da Categoria</label>
-                    <input type="text" class="form-control" id="category-name" required>
+                    <input type="text" class="form-control" id="category-name">
                 </div>
                 
                 <div class="form-group">
@@ -1186,88 +1092,21 @@
                 </div>
                 
                 <div class="form-group">
-                    <label class="form-label">Ícone (Classe FontAwesome)</label>
-                    <input type="text" class="form-control" id="category-icon" placeholder="fas fa-box">
-                    <p style="color: #64748b; font-size: 0.9rem; margin-top: 5px;">Exemplo: fas fa-box, fas fa-tools, fas fa-spray-can</p>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">Status</label>
-                    <div style="display: flex; align-items: center; gap: 15px;">
-                        <label class="switch">
-                            <input type="checkbox" id="category-status" checked>
-                            <span class="slider"></span>
-                        </label>
-                        <span>Categoria Ativa</span>
-                    </div>
+                    <label class="form-label">Ícone</label>
+                    <select class="form-control" id="category-icon">
+                        <option value="fas fa-spray-can">Pistola</option>
+                        <option value="fas fa-wind">Airless</option>
+                        <option value="fas fa-filter">Bico</option>
+                        <option value="fas fa-oil-can">Bomba</option>
+                        <option value="fas fa-fill-drip">Tanque</option>
+                        <option value="fas fa-tools">Ferramenta</option>
+                        <option value="fas fa-box">Geral</option>
+                    </select>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button class="btn btn-primary" onclick="closeCategoryModal()">Cancelar</button>
-                <button class="btn btn-success" onclick="saveCategory()">Salvar Categoria</button>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Modal de Usuário -->
-    <div class="modal-overlay" id="user-modal">
-        <div class="modal">
-            <div class="modal-header">
-                <h3 class="modal-title" id="user-modal-title">Novo Usuário</h3>
-                <button class="modal-close" onclick="closeUserModal()">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label">Nome Completo</label>
-                        <input type="text" class="form-control" id="user-name" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">E-mail</label>
-                        <input type="email" class="form-control" id="user-email" required>
-                    </div>
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label">Senha</label>
-                        <input type="password" class="form-control" id="user-password" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Confirmar Senha</label>
-                        <input type="password" class="form-control" id="user-confirm-password" required>
-                    </div>
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label">Cargo</label>
-                        <select class="form-control" id="user-role" required>
-                            <option value="admin">Administrador</option>
-                            <option value="editor">Editor</option>
-                            <option value="viewer">Visualizador</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Telefone</label>
-                        <input type="text" class="form-control" id="user-phone">
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">Status</label>
-                    <div style="display: flex; align-items: center; gap: 15px;">
-                        <label class="switch">
-                            <input type="checkbox" id="user-status" checked>
-                            <span class="slider"></span>
-                        </label>
-                        <span>Usuário Ativo</span>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-primary" onclick="closeUserModal()">Cancelar</button>
-                <button class="btn btn-success" onclick="saveUser()">Salvar Usuário</button>
+            <div style="padding: 20px; border-top: 2px solid #e2e8f0; display: flex; justify-content: flex-end; gap: 10px;">
+                <button class="action-btn btn-primary" onclick="closeCategoryModal()">Cancelar</button>
+                <button class="action-btn btn-success" onclick="saveCategory()">Salvar Categoria</button>
             </div>
         </div>
     </div>
@@ -1279,36 +1118,29 @@
     </div>
 
     <script>
-        // Dados iniciais (simulando banco de dados)
-        let products = [
-            { id: 1, ref: '770005', name: 'PISTOLA W77 - 1.5', category: 'pistols-conventional', brand: 'W77', price: 189.90, stock: 15, status: 'active', date: '2023-10-15' },
-            { id: 2, ref: '917591', name: 'PISTOLA W71 - 1.5', category: 'pistols-conventional', brand: 'W71', price: 165.50, stock: 8, status: 'active', date: '2023-10-14' },
-            { id: 3, ref: '917555', name: 'PISTOLA AIRLESS VERTICAL - 395', category: 'pistols-airless', brand: '395', price: 420.00, stock: 5, status: 'active', date: '2023-10-13' },
-            { id: 4, ref: '915848', name: 'BICO AIRLESS XHD 107', category: 'nozzles-xhd', brand: 'XHD', price: 45.90, stock: 32, status: 'active', date: '2023-10-12' },
-            { id: 5, ref: '6256000610', name: 'LIXADEIRA ROTO ORBITAL PNEUM LPS10 VONDER', category: 'tools', brand: 'VONDER', price: 289.90, stock: 3, status: 'inactive', date: '2023-10-11' }
+        // Dados do sistema
+        let products = JSON.parse(localStorage.getItem('products')) || [
+            { id: 1, ref: '770005', name: 'PISTOLA W77 - 1.5', category: 'pistols-conventional', brand: 'W77', description: 'Pistola convencional para pintura', images: [], status: 'active' },
+            { id: 2, ref: '917591', name: 'PISTOLA W71 - 1.5', category: 'pistols-conventional', brand: 'W71', description: 'Pistola convencional de alta performance', images: [], status: 'active' },
+            { id: 3, ref: '917555', name: 'PISTOLA AIRLESS VERTICAL - 395', category: 'pistols-airless', brand: '395', description: 'Pistola airless vertical', images: [], status: 'active' },
+            { id: 4, ref: '915848', name: 'BICO AIRLESS XHD 107', category: 'nozzles-xhd', brand: 'XHD', description: 'Bico airless XHD tamanho 107', images: [], status: 'active' },
+            { id: 5, ref: '6256000610', name: 'LIXADEIRA ROTO ORBITAL PNEUM LPS10 VONDER', category: 'tools', brand: 'VONDER', description: 'Lixadeira pneumática orbital', images: [], status: 'active' }
         ];
         
-        let categories = [
-            { id: 1, name: 'Pistolas Convencionais', description: 'Pistolas de pintura convencional', icon: 'fas fa-spray-can', productCount: 15, status: 'active' },
-            { id: 2, name: 'Pistolas Airless', description: 'Pistolas de pintura airless', icon: 'fas fa-wind', productCount: 6, status: 'active' },
-            { id: 3, name: 'Bicos e Suportes XHD', description: 'Bicos e suportes XHD para airless', icon: 'fas fa-filter', productCount: 21, status: 'active' },
-            { id: 4, name: 'Bicos e Suportes RAC', description: 'Bicos e suportes RAC', icon: 'fas fa-filter', productCount: 1, status: 'active' },
-            { id: 5, name: 'Bombas de Duplo Diafragma', description: 'Bombas para transferência de fluidos', icon: 'fas fa-oil-can', productCount: 3, status: 'active' },
-            { id: 6, name: 'Tanques e Agitadores', description: 'Tanques de pintura e agitadores', icon: 'fas fa-fill-drip', productCount: 6, status: 'active' },
-            { id: 7, name: 'Ferramentas Pneumáticas', description: 'Ferramentas para preparação', icon: 'fas fa-tools', productCount: 6, status: 'active' }
+        let categories = JSON.parse(localStorage.getItem('categories')) || [
+            { id: 1, name: 'Pistolas Convencionais', description: 'Pistolas de pintura convencional', icon: 'fas fa-spray-can', status: 'active' },
+            { id: 2, name: 'Pistolas Airless', description: 'Pistolas de pintura airless', icon: 'fas fa-wind', status: 'active' },
+            { id: 3, name: 'Bicos XHD', description: 'Bicos e suportes XHD para airless', icon: 'fas fa-filter', status: 'active' },
+            { id: 4, name: 'Bombas', description: 'Bombas de duplo diafragma', icon: 'fas fa-oil-can', status: 'active' },
+            { id: 5, name: 'Tanques', description: 'Tanques de pintura e agitadores', icon: 'fas fa-fill-drip', status: 'active' },
+            { id: 6, name: 'Ferramentas', description: 'Ferramentas pneumáticas', icon: 'fas fa-tools', status: 'active' }
         ];
         
-        let users = [
-            { id: 1, name: 'Administrador Principal', email: 'admin@pintandoqualidade.com.br', role: 'admin', lastAccess: '2023-10-15 14:30', status: 'active' },
-            { id: 2, name: 'João Silva', email: 'joao@pintandoqualidade.com.br', role: 'editor', lastAccess: '2023-10-15 10:15', status: 'active' },
-            { id: 3, name: 'Maria Santos', email: 'maria@pintandoqualidade.com.br', role: 'viewer', lastAccess: '2023-10-14 16:45', status: 'inactive' }
-        ];
-        
-        let images = [];
+        let images = JSON.parse(localStorage.getItem('images')) || [];
         let uploadedFiles = [];
         let editingProductId = null;
         let editingCategoryId = null;
-        let editingUserId = null;
+        let currentCategory = 'all';
         
         // Mostrar notificação
         function showNotification(type, message) {
@@ -1321,7 +1153,6 @@
             const icon = notification.querySelector('i');
             if (type === 'success') icon.className = 'fas fa-check-circle';
             else if (type === 'error') icon.className = 'fas fa-exclamation-circle';
-            else if (type === 'warning') icon.className = 'fas fa-exclamation-triangle';
             else icon.className = 'fas fa-info-circle';
             
             notification.classList.add('show');
@@ -1331,56 +1162,150 @@
             }, 3000);
         }
         
-        // Navegação
+        // Navegação entre páginas
         function navigateTo(page) {
-            // Atualizar menu ativo
-            document.querySelectorAll('.menu-btn').forEach(btn => {
+            document.querySelectorAll('.main-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(`${page}-page`).classList.add('active');
+            
+            document.querySelectorAll('.main-btn').forEach(btn => {
                 btn.classList.remove('active');
                 if (btn.dataset.page === page) {
                     btn.classList.add('active');
                 }
             });
             
-            // Mostrar página correspondente
-            document.querySelectorAll('.admin-content').forEach(content => {
-                content.classList.remove('active');
-            });
-            document.getElementById(`${page}-page`).classList.add('active');
-            
-            // Carregar dados da página
-            if (page === 'dashboard') updateDashboard();
-            else if (page === 'products') loadProducts();
-            else if (page === 'categories') loadCategories();
-            else if (page === 'images') loadImages();
-            else if (page === 'users') loadUsers();
+            if (page === 'catalog') {
+                loadCatalog();
+            } else if (page === 'admin') {
+                showDashboard();
+            }
         }
         
-        // Atualizar dashboard
-        function updateDashboard() {
+        // Carregar catálogo
+        function loadCatalog() {
+            loadProductsByCategory(currentCategory);
+            setupCategoryNavigation();
+        }
+        
+        // Navegação por categorias
+        function setupCategoryNavigation() {
+            document.querySelectorAll('.category-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const category = this.dataset.category;
+                    currentCategory = category;
+                    
+                    document.querySelectorAll('.category-item').forEach(i => {
+                        i.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    
+                    loadProductsByCategory(category);
+                });
+            });
+        }
+        
+        // Carregar produtos por categoria
+        function loadProductsByCategory(category) {
+            const productsGrid = document.getElementById('products-grid');
+            productsGrid.innerHTML = '';
+            
+            let filteredProducts = [];
+            
+            if (category === 'all') {
+                filteredProducts = products;
+                document.getElementById('category-title').textContent = 'Todos os Produtos';
+                document.getElementById('category-description').textContent = 'Catálogo completo de equipamentos para pintura';
+            } else {
+                filteredProducts = products.filter(p => p.category === category);
+                const categoryInfo = categories.find(c => c.id == category.split('-')[0]) || { name: category };
+                document.getElementById('category-title').textContent = categoryInfo.name;
+                document.getElementById('category-description').textContent = categoryInfo.description || 'Produtos desta categoria';
+            }
+            
+            if (filteredProducts.length === 0) {
+                productsGrid.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: #64748b;">
+                        <i class="fas fa-box-open" style="font-size: 3rem; margin-bottom: 15px;"></i>
+                        <h3>Nenhum produto nesta categoria</h3>
+                    </div>
+                `;
+                return;
+            }
+            
+            filteredProducts.forEach(product => {
+                const categoryInfo = categories.find(c => c.id == product.category.split('-')[0]) || { name: product.category };
+                
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card';
+                productCard.innerHTML = `
+                    <div class="product-ref">REF: ${product.ref}</div>
+                    <h3 class="product-name">${product.name}</h3>
+                    <div style="margin-bottom: 15px;">
+                        <span style="background: #f1f5f9; color: #475569; padding: 4px 10px; border-radius: 15px; font-size: 0.85rem; display: inline-block; margin-bottom: 5px;">
+                            ${product.brand}
+                        </span>
+                    </div>
+                    <div style="color: #64748b; font-size: 0.9rem; margin-bottom: 20px;">
+                        ${product.description || 'Sem descrição disponível'}
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="color: #3b82f6; font-weight: 600; font-size: 0.9rem;">
+                            ${categoryInfo.name}
+                        </span>
+                        <button class="action-btn btn-primary" onclick="viewProduct(${product.id})">
+                            <i class="fas fa-eye"></i> Detalhes
+                        </button>
+                    </div>
+                `;
+                productsGrid.appendChild(productCard);
+            });
+        }
+        
+        // Visualizar produto
+        function viewProduct(id) {
+            const product = products.find(p => p.id === id);
+            if (!product) return;
+            
+            const categoryInfo = categories.find(c => c.id == product.category.split('-')[0]) || { name: product.category };
+            
+            alert(`Detalhes do Produto:\n\nREF: ${product.ref}\nNome: ${product.name}\nMarca: ${product.brand}\nCategoria: ${categoryInfo.name}\nDescrição: ${product.description || 'Não disponível'}\n\nPara orçamento, entre em contato: (11) 3456-7890`);
+        }
+        
+        // Painel Administrativo - Dashboard
+        function showDashboard() {
+            document.getElementById('admin-dashboard').style.display = 'block';
+            document.getElementById('admin-products').style.display = 'none';
+            document.getElementById('admin-categories').style.display = 'none';
+            document.getElementById('admin-images').style.display = 'none';
+            document.getElementById('admin-settings').style.display = 'none';
+            
+            // Atualizar estatísticas
             document.getElementById('total-products').textContent = products.length;
             document.getElementById('total-categories').textContent = categories.length;
             document.getElementById('total-images').textContent = images.length;
-            document.getElementById('total-users').textContent = users.length;
+            document.getElementById('total-users').textContent = 3; // Fixo por enquanto
             
-            // Últimos produtos
+            // Carregar últimos produtos
             const recentProducts = document.getElementById('recent-products');
             recentProducts.innerHTML = '';
             
-            const lastProducts = [...products].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 5);
-            
+            const lastProducts = [...products].slice(-5);
             lastProducts.forEach(product => {
-                const category = categories.find(c => c.name.toLowerCase().includes(product.category.split('-')[0]));
+                const categoryInfo = categories.find(c => c.id == product.category.split('-')[0]) || { name: product.category };
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td><strong>${product.ref}</strong></td>
+                    <td>${product.ref}</td>
                     <td>${product.name}</td>
-                    <td>${category ? category.name : product.category}</td>
-                    <td>${product.date}</td>
-                    <td><span class="badge ${product.status === 'active' ? 'badge-success' : 'badge-danger'}">${product.status === 'active' ? 'Ativo' : 'Inativo'}</span></td>
+                    <td>${categoryInfo.name}</td>
                     <td>
-                        <div class="actions">
-                            <button class="action-btn action-edit" onclick="editProduct(${product.id})">
+                        <div class="table-actions">
+                            <button class="action-icon action-edit" onclick="editProduct(${product.id})">
                                 <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="action-icon action-delete" onclick="deleteProduct(${product.id})">
+                                <i class="fas fa-trash"></i>
                             </button>
                         </div>
                     </td>
@@ -1389,45 +1314,35 @@
             });
         }
         
-        // Carregar produtos
-        function loadProducts() {
+        // Painel Administrativo - Produtos
+        function showProductsAdmin() {
+            document.getElementById('admin-dashboard').style.display = 'none';
+            document.getElementById('admin-products').style.display = 'block';
+            document.getElementById('admin-categories').style.display = 'none';
+            document.getElementById('admin-images').style.display = 'none';
+            document.getElementById('admin-settings').style.display = 'none';
+            
+            loadProductsAdmin();
+        }
+        
+        function loadProductsAdmin() {
             const productsList = document.getElementById('products-list');
             productsList.innerHTML = '';
             
-            if (products.length === 0) {
-                productsList.innerHTML = `
-                    <tr>
-                        <td colspan="7" class="empty-message">
-                            <i class="fas fa-box-open"></i>
-                            <p>Nenhum produto cadastrado</p>
-                        </td>
-                    </tr>
-                `;
-                return;
-            }
-            
             products.forEach(product => {
-                const category = categories.find(c => c.name.toLowerCase().includes(product.category.split('-')[0]));
+                const categoryInfo = categories.find(c => c.id == product.category.split('-')[0]) || { name: product.category };
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td><strong>${product.ref}</strong></td>
-                    <td>
-                        <div class="product-with-image">
-                            <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" 
-                                 class="product-thumb" alt="${product.name}">
-                            <div>${product.name}</div>
-                        </div>
-                    </td>
-                    <td>${category ? category.name : product.category}</td>
+                    <td>${product.ref}</td>
+                    <td>${product.name}</td>
+                    <td>${categoryInfo.name}</td>
                     <td>${product.brand}</td>
-                    <td>R$ ${product.price.toFixed(2)}</td>
-                    <td><span class="badge ${product.status === 'active' ? 'badge-success' : 'badge-danger'}">${product.status === 'active' ? 'Ativo' : 'Inativo'}</span></td>
                     <td>
-                        <div class="actions">
-                            <button class="action-btn action-edit" onclick="editProduct(${product.id})">
+                        <div class="table-actions">
+                            <button class="action-icon action-edit" onclick="editProduct(${product.id})">
                                 <i class="fas fa-edit"></i>
                             </button>
-                            <button class="action-btn action-delete" onclick="deleteProduct(${product.id})">
+                            <button class="action-icon action-delete" onclick="deleteProduct(${product.id})">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </div>
@@ -1437,12 +1352,23 @@
             });
         }
         
-        // Carregar categorias
-        function loadCategories() {
+        // Painel Administrativo - Categorias
+        function showCategoriesAdmin() {
+            document.getElementById('admin-dashboard').style.display = 'none';
+            document.getElementById('admin-products').style.display = 'none';
+            document.getElementById('admin-categories').style.display = 'block';
+            document.getElementById('admin-images').style.display = 'none';
+            document.getElementById('admin-settings').style.display = 'none';
+            
+            loadCategoriesAdmin();
+        }
+        
+        function loadCategoriesAdmin() {
             const categoriesList = document.getElementById('categories-list');
             categoriesList.innerHTML = '';
             
             categories.forEach(category => {
+                const productCount = products.filter(p => p.category === category.name.toLowerCase().replace(/ /g, '-')).length;
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${category.id}</td>
@@ -1453,14 +1379,13 @@
                         </div>
                     </td>
                     <td>${category.description}</td>
-                    <td>${category.productCount}</td>
-                    <td><span class="badge ${category.status === 'active' ? 'badge-success' : 'badge-danger'}">${category.status === 'active' ? 'Ativa' : 'Inativa'}</span></td>
+                    <td>${productCount}</td>
                     <td>
-                        <div class="actions">
-                            <button class="action-btn action-edit" onclick="editCategory(${category.id})">
+                        <div class="table-actions">
+                            <button class="action-icon action-edit" onclick="editCategory(${category.id})">
                                 <i class="fas fa-edit"></i>
                             </button>
-                            <button class="action-btn action-delete" onclick="deleteCategory(${category.id})">
+                            <button class="action-icon action-delete" onclick="deleteCategory(${category.id})">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </div>
@@ -1470,56 +1395,27 @@
             });
         }
         
-        // Carregar usuários
-        function loadUsers() {
-            const usersList = document.getElementById('users-list');
-            usersList.innerHTML = '';
+        // Painel Administrativo - Imagens
+        function showImagesAdmin() {
+            document.getElementById('admin-dashboard').style.display = 'none';
+            document.getElementById('admin-products').style.display = 'none';
+            document.getElementById('admin-categories').style.display = 'none';
+            document.getElementById('admin-images').style.display = 'block';
+            document.getElementById('admin-settings').style.display = 'none';
             
-            users.forEach(user => {
-                const roleNames = {
-                    'admin': 'Administrador',
-                    'editor': 'Editor',
-                    'viewer': 'Visualizador'
-                };
-                
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${user.name}</td>
-                    <td>${user.email}</td>
-                    <td><span class="badge badge-info">${roleNames[user.role]}</span></td>
-                    <td>${user.lastAccess}</td>
-                    <td><span class="badge ${user.status === 'active' ? 'badge-success' : 'badge-danger'}">${user.status === 'active' ? 'Ativo' : 'Inativo'}</span></td>
-                    <td>
-                        <div class="actions">
-                            <button class="action-btn action-edit" onclick="editUser(${user.id})">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="action-btn action-delete" onclick="deleteUser(${user.id})">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    </td>
-                `;
-                usersList.appendChild(row);
-            });
+            loadGallery();
+            setupImageUpload();
         }
         
-        // Carregar imagens
-        function loadImages() {
-            const gallery = document.getElementById('gallery-images');
-            gallery.innerHTML = '';
+        // Painel Administrativo - Configurações
+        function showSettingsAdmin() {
+            document.getElementById('admin-dashboard').style.display = 'none';
+            document.getElementById('admin-products').style.display = 'none';
+            document.getElementById('admin-categories').style.display = 'none';
+            document.getElementById('admin-images').style.display = 'none';
+            document.getElementById('admin-settings').style.display = 'block';
             
-            images.forEach(image => {
-                const item = document.createElement('div');
-                item.className = 'gallery-item';
-                item.innerHTML = `
-                    <img src="${image.url}" class="gallery-img" alt="${image.name}">
-                    <div class="gallery-remove" onclick="removeImage(${image.id})">
-                        <i class="fas fa-times"></i>
-                    </div>
-                `;
-                gallery.appendChild(item);
-            });
+            loadSettings();
         }
         
         // Modal de Produto
@@ -1528,7 +1424,7 @@
             const modal = document.getElementById('product-modal');
             const title = document.getElementById('product-modal-title');
             
-            // Carregar categorias no select
+            // Carregar categorias
             const categorySelect = document.getElementById('product-category');
             categorySelect.innerHTML = '<option value="">Selecione uma categoria</option>';
             categories.forEach(category => {
@@ -1547,10 +1443,7 @@
                     document.getElementById('product-name').value = product.name;
                     document.getElementById('product-category').value = product.category;
                     document.getElementById('product-brand').value = product.brand;
-                    document.getElementById('product-price').value = product.price;
-                    document.getElementById('product-stock').value = product.stock;
                     document.getElementById('product-description').value = product.description || '';
-                    document.getElementById('product-status').checked = product.status === 'active';
                 }
             } else {
                 title.textContent = 'Novo Produto';
@@ -1558,10 +1451,7 @@
                 document.getElementById('product-name').value = '';
                 document.getElementById('product-category').value = '';
                 document.getElementById('product-brand').value = '';
-                document.getElementById('product-price').value = '';
-                document.getElementById('product-stock').value = '';
                 document.getElementById('product-description').value = '';
-                document.getElementById('product-status').checked = true;
             }
             
             modal.classList.add('active');
@@ -1577,13 +1467,10 @@
             const name = document.getElementById('product-name').value.trim();
             const category = document.getElementById('product-category').value;
             const brand = document.getElementById('product-brand').value.trim();
-            const price = parseFloat(document.getElementById('product-price').value) || 0;
-            const stock = parseInt(document.getElementById('product-stock').value) || 0;
             const description = document.getElementById('product-description').value.trim();
-            const status = document.getElementById('product-status').checked ? 'active' : 'inactive';
             
             if (!ref || !name || !category) {
-                showNotification('error', 'Preencha os campos obrigatórios: REF, Nome e Categoria');
+                showNotification('error', 'Preencha REF, Nome e Categoria');
                 return;
             }
             
@@ -1591,33 +1478,29 @@
                 // Atualizar
                 const index = products.findIndex(p => p.id === editingProductId);
                 if (index !== -1) {
-                    products[index] = {
-                        ...products[index],
-                        ref, name, category, brand, price, stock, description, status
-                    };
+                    products[index] = { ...products[index], ref, name, category, brand, description };
                 }
-                showNotification('success', 'Produto atualizado com sucesso!');
+                showNotification('success', 'Produto atualizado!');
             } else {
-                // Novo produto
+                // Novo
                 const newProduct = {
                     id: products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1,
                     ref,
                     name,
                     category,
                     brand,
-                    price,
-                    stock,
                     description,
-                    status,
-                    date: new Date().toISOString().split('T')[0]
+                    images: [],
+                    status: 'active'
                 };
                 products.push(newProduct);
-                showNotification('success', 'Produto cadastrado com sucesso!');
+                showNotification('success', 'Produto cadastrado!');
             }
             
+            saveData();
             closeProductModal();
-            loadProducts();
-            updateDashboard();
+            loadProductsAdmin();
+            loadCatalog();
         }
         
         function editProduct(id) {
@@ -1625,11 +1508,12 @@
         }
         
         function deleteProduct(id) {
-            if (confirm('Tem certeza que deseja excluir este produto?')) {
+            if (confirm('Excluir este produto?')) {
                 products = products.filter(p => p.id !== id);
-                showNotification('success', 'Produto excluído com sucesso!');
-                loadProducts();
-                updateDashboard();
+                saveData();
+                showNotification('success', 'Produto excluído!');
+                loadProductsAdmin();
+                loadCatalog();
             }
         }
         
@@ -1639,7 +1523,7 @@
             const productsList = document.getElementById('products-list');
             
             if (!searchTerm) {
-                loadProducts();
+                loadProductsAdmin();
                 return;
             }
             
@@ -1654,9 +1538,8 @@
             if (filtered.length === 0) {
                 productsList.innerHTML = `
                     <tr>
-                        <td colspan="7" class="empty-message">
-                            <i class="fas fa-search"></i>
-                            <p>Nenhum produto encontrado para "${searchTerm}"</p>
+                        <td colspan="5" style="text-align: center; padding: 30px; color: #64748b;">
+                            Nenhum produto encontrado
                         </td>
                     </tr>
                 `;
@@ -1664,21 +1547,19 @@
             }
             
             filtered.forEach(product => {
-                const category = categories.find(c => c.name.toLowerCase().includes(product.category.split('-')[0]));
+                const categoryInfo = categories.find(c => c.id == product.category.split('-')[0]) || { name: product.category };
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td><strong>${product.ref}</strong></td>
+                    <td>${product.ref}</td>
                     <td>${product.name}</td>
-                    <td>${category ? category.name : product.category}</td>
+                    <td>${categoryInfo.name}</td>
                     <td>${product.brand}</td>
-                    <td>R$ ${product.price.toFixed(2)}</td>
-                    <td><span class="badge ${product.status === 'active' ? 'badge-success' : 'badge-danger'}">${product.status === 'active' ? 'Ativo' : 'Inativo'}</span></td>
                     <td>
-                        <div class="actions">
-                            <button class="action-btn action-edit" onclick="editProduct(${product.id})">
+                        <div class="table-actions">
+                            <button class="action-icon action-edit" onclick="editProduct(${product.id})">
                                 <i class="fas fa-edit"></i>
                             </button>
-                            <button class="action-btn action-delete" onclick="deleteProduct(${product.id})">
+                            <button class="action-icon action-delete" onclick="deleteProduct(${product.id})">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </div>
@@ -1702,14 +1583,12 @@
                     document.getElementById('category-name').value = category.name;
                     document.getElementById('category-description').value = category.description;
                     document.getElementById('category-icon').value = category.icon;
-                    document.getElementById('category-status').checked = category.status === 'active';
                 }
             } else {
                 title.textContent = 'Nova Categoria';
                 document.getElementById('category-name').value = '';
                 document.getElementById('category-description').value = '';
-                document.getElementById('category-icon').value = 'fas fa-folder';
-                document.getElementById('category-status').checked = true;
+                document.getElementById('category-icon').value = 'fas fa-box';
             }
             
             modal.classList.add('active');
@@ -1723,11 +1602,10 @@
         function saveCategory() {
             const name = document.getElementById('category-name').value.trim();
             const description = document.getElementById('category-description').value.trim();
-            const icon = document.getElementById('category-icon').value.trim() || 'fas fa-folder';
-            const status = document.getElementById('category-status').checked ? 'active' : 'inactive';
+            const icon = document.getElementById('category-icon').value;
             
             if (!name) {
-                showNotification('error', 'O nome da categoria é obrigatório');
+                showNotification('error', 'Nome da categoria é obrigatório');
                 return;
             }
             
@@ -1735,26 +1613,26 @@
                 // Atualizar
                 const index = categories.findIndex(c => c.id === editingCategoryId);
                 if (index !== -1) {
-                    categories[index] = { ...categories[index], name, description, icon, status };
+                    categories[index] = { ...categories[index], name, description, icon };
                 }
-                showNotification('success', 'Categoria atualizada com sucesso!');
+                showNotification('success', 'Categoria atualizada!');
             } else {
-                // Nova categoria
+                // Nova
                 const newCategory = {
                     id: categories.length > 0 ? Math.max(...categories.map(c => c.id)) + 1 : 1,
                     name,
                     description,
                     icon,
-                    productCount: 0,
-                    status
+                    status: 'active'
                 };
                 categories.push(newCategory);
-                showNotification('success', 'Categoria criada com sucesso!');
+                showNotification('success', 'Categoria criada!');
             }
             
+            saveData();
             closeCategoryModal();
-            loadCategories();
-            updateDashboard();
+            loadCategoriesAdmin();
+            loadCatalog();
         }
         
         function editCategory(id) {
@@ -1773,117 +1651,12 @@
                 return;
             }
             
-            if (confirm('Tem certeza que deseja excluir esta categoria?')) {
+            if (confirm('Excluir esta categoria?')) {
                 categories = categories.filter(c => c.id !== id);
-                showNotification('success', 'Categoria excluída com sucesso!');
-                loadCategories();
-                updateDashboard();
-            }
-        }
-        
-        // Modal de Usuário
-        function openUserModal(userId = null) {
-            editingUserId = userId;
-            const modal = document.getElementById('user-modal');
-            const title = document.getElementById('user-modal-title');
-            
-            if (userId) {
-                title.textContent = 'Editar Usuário';
-                const user = users.find(u => u.id === userId);
-                
-                if (user) {
-                    document.getElementById('user-name').value = user.name;
-                    document.getElementById('user-email').value = user.email;
-                    document.getElementById('user-role').value = user.role;
-                    document.getElementById('user-phone').value = user.phone || '';
-                    document.getElementById('user-status').checked = user.status === 'active';
-                    document.getElementById('user-password').required = false;
-                    document.getElementById('user-confirm-password').required = false;
-                }
-            } else {
-                title.textContent = 'Novo Usuário';
-                document.getElementById('user-name').value = '';
-                document.getElementById('user-email').value = '';
-                document.getElementById('user-role').value = 'editor';
-                document.getElementById('user-phone').value = '';
-                document.getElementById('user-password').value = '';
-                document.getElementById('user-confirm-password').value = '';
-                document.getElementById('user-status').checked = true;
-                document.getElementById('user-password').required = true;
-                document.getElementById('user-confirm-password').required = true;
-            }
-            
-            modal.classList.add('active');
-        }
-        
-        function closeUserModal() {
-            document.getElementById('user-modal').classList.remove('active');
-            editingUserId = null;
-        }
-        
-        function saveUser() {
-            const name = document.getElementById('user-name').value.trim();
-            const email = document.getElementById('user-email').value.trim();
-            const password = document.getElementById('user-password').value;
-            const confirmPassword = document.getElementById('user-confirm-password').value;
-            const role = document.getElementById('user-role').value;
-            const phone = document.getElementById('user-phone').value.trim();
-            const status = document.getElementById('user-status').checked ? 'active' : 'inactive';
-            
-            if (!name || !email || !role) {
-                showNotification('error', 'Preencha os campos obrigatórios');
-                return;
-            }
-            
-            if (!editingUserId && (!password || password !== confirmPassword)) {
-                showNotification('error', 'As senhas não coincidem');
-                return;
-            }
-            
-            if (editingUserId) {
-                // Atualizar
-                const index = users.findIndex(u => u.id === editingUserId);
-                if (index !== -1) {
-                    users[index] = { ...users[index], name, email, role, phone, status };
-                }
-                showNotification('success', 'Usuário atualizado com sucesso!');
-            } else {
-                // Novo usuário
-                const newUser = {
-                    id: users.length > 0 ? Math.max(...users.map(u => u.id)) + 1 : 1,
-                    name,
-                    email,
-                    role,
-                    phone,
-                    status,
-                    lastAccess: new Date().toISOString().split('T')[0] + ' ' + 
-                               new Date().toLocaleTimeString('pt-BR', {hour12: false}).substring(0, 5)
-                };
-                users.push(newUser);
-                showNotification('success', 'Usuário criado com sucesso!');
-            }
-            
-            closeUserModal();
-            loadUsers();
-            updateDashboard();
-        }
-        
-        function editUser(id) {
-            openUserModal(id);
-        }
-        
-        function deleteUser(id) {
-            const user = users.find(u => u.id === id);
-            if (user && user.email === 'admin@pintandoqualidade.com.br') {
-                showNotification('error', 'Não é possível excluir o administrador principal');
-                return;
-            }
-            
-            if (confirm('Tem certeza que deseja excluir este usuário?')) {
-                users = users.filter(u => u.id !== id);
-                showNotification('success', 'Usuário excluído com sucesso!');
-                loadUsers();
-                updateDashboard();
+                saveData();
+                showNotification('success', 'Categoria excluída!');
+                loadCategoriesAdmin();
+                loadCatalog();
             }
         }
         
@@ -1904,11 +1677,11 @@
             
             // Destacar área
             ['dragenter', 'dragover'].forEach(eventName => {
-                dropArea.addEventListener(eventName, () => dropArea.classList.add('dragover'), false);
+                dropArea.addEventListener(eventName, () => dropArea.style.borderColor = '#3b82f6', false);
             });
             
             ['dragleave', 'drop'].forEach(eventName => {
-                dropArea.addEventListener(eventName, () => dropArea.classList.remove('dragover'), false);
+                dropArea.addEventListener(eventName, () => dropArea.style.borderColor = '#cbd5e1', false);
             });
             
             // Lidar com drop
@@ -1947,7 +1720,7 @@
                     item.className = 'gallery-item';
                     item.innerHTML = `
                         <img src="${e.target.result}" class="gallery-img" alt="${file.name}">
-                        <div class="gallery-remove" onclick="removeUploadedImage(${uploadedFiles.length - 1})">
+                        <div style="position: absolute; top: 5px; right: 5px; background: rgba(239,68,68,0.9); color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.8rem;" onclick="removeUploadedImage(${uploadedFiles.length - 1})">
                             <i class="fas fa-times"></i>
                         </div>
                     `;
@@ -1973,7 +1746,7 @@
                     item.className = 'gallery-item';
                     item.innerHTML = `
                         <img src="${e.target.result}" class="gallery-img" alt="${file.name}">
-                        <div class="gallery-remove" onclick="removeUploadedImage(${index})">
+                        <div style="position: absolute; top: 5px; right: 5px; background: rgba(239,68,68,0.9); color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.8rem;" onclick="removeUploadedImage(${index})">
                             <i class="fas fa-times"></i>
                         </div>
                     `;
@@ -2007,80 +1780,104 @@
                     reader.readAsDataURL(file);
                 });
                 
-                loadImages();
+                saveData();
+                loadGallery();
                 uploadedFiles = [];
                 document.getElementById('image-preview').innerHTML = '';
                 
                 showNotification('success', 'Imagens enviadas com sucesso!');
-                updateDashboard();
             }, 1500);
+        }
+        
+        function loadGallery() {
+            const gallery = document.getElementById('gallery-images');
+            gallery.innerHTML = '';
+            
+            images.forEach(image => {
+                const item = document.createElement('div');
+                item.className = 'gallery-item';
+                item.innerHTML = `
+                    <img src="${image.url}" class="gallery-img" alt="${image.name}">
+                    <div style="position: absolute; top: 5px; right: 5px; background: rgba(239,68,68,0.9); color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.8rem;" onclick="removeImage(${image.id})">
+                        <i class="fas fa-times"></i>
+                    </div>
+                `;
+                gallery.appendChild(item);
+            });
         }
         
         function removeImage(id) {
             if (confirm('Excluir esta imagem?')) {
                 images = images.filter(img => img.id !== id);
-                loadImages();
-                updateDashboard();
-                showNotification('success', 'Imagem excluída');
+                saveData();
+                loadGallery();
+                showNotification('success', 'Imagem excluída!');
             }
         }
         
         // Configurações
-        function saveSettings() {
-            const companyName = document.getElementById('company-name').value;
-            const companyPhone = document.getElementById('company-phone').value;
-            const companyEmail = document.getElementById('company-email').value;
-            const companyAddress = document.getElementById('company-address').value;
-            const maintenanceMode = document.getElementById('maintenance-mode').checked;
-            
-            localStorage.setItem('companyName', companyName);
-            localStorage.setItem('companyPhone', companyPhone);
-            localStorage.setItem('companyEmail', companyEmail);
-            localStorage.setItem('companyAddress', companyAddress);
-            localStorage.setItem('maintenanceMode', maintenanceMode);
-            
-            showNotification('success', 'Configurações salvas!');
-        }
-        
         function loadSettings() {
             document.getElementById('company-name').value = localStorage.getItem('companyName') || 'PINTANDO QUALIDADE';
             document.getElementById('company-phone').value = localStorage.getItem('companyPhone') || '(11) 3456-7890';
             document.getElementById('company-email').value = localStorage.getItem('companyEmail') || 'vendas@pintandoqualidade.com.br';
-            document.getElementById('company-address').value = localStorage.getItem('companyAddress') || 'São Paulo - SP';
-            document.getElementById('maintenance-mode').checked = localStorage.getItem('maintenanceMode') === 'true';
         }
+        
+        function saveSettings() {
+            const companyName = document.getElementById('company-name').value;
+            const companyPhone = document.getElementById('company-phone').value;
+            const companyEmail = document.getElementById('company-email').value;
+            
+            localStorage.setItem('companyName', companyName);
+            localStorage.setItem('companyPhone', companyPhone);
+            localStorage.setItem('companyEmail', companyEmail);
+            
+            showNotification('success', 'Configurações salvas!');
+        }
+        
+        // Salvar dados
+        function saveData() {
+            localStorage.setItem('products', JSON.stringify(products));
+            localStorage.setItem('categories', JSON.stringify(categories));
+            localStorage.setItem('images', JSON.stringify(images));
+        }
+        
+        // Logout
+        function logout() {
+            if (confirm('Deseja sair do painel administrativo?')) {
+                navigateTo('catalog');
+            }
+        }
+        
+        // Menu Mobile
+        document.getElementById('mobile-menu-toggle').addEventListener('click', function() {
+            const menu = document.querySelector('.main-menu');
+            menu.style.display = menu.style.display === 'none' ? 'flex' : 'none';
+        });
         
         // Inicializar
         document.addEventListener('DOMContentLoaded', function() {
             // Configurar navegação
-            document.querySelectorAll('.menu-btn').forEach(btn => {
+            document.querySelectorAll('.main-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
                     navigateTo(this.dataset.page);
                 });
             });
             
-            // Configurar upload
-            setupImageUpload();
+            // Carregar catálogo inicial
+            loadCatalog();
             
-            // Carregar configurações
-            loadSettings();
+            // Ajustar menu mobile
+            if (window.innerWidth <= 768) {
+                document.querySelector('.main-menu').style.display = 'none';
+            }
             
-            // Carregar dados iniciais
-            updateDashboard();
-            loadProducts();
-            loadCategories();
-            loadUsers();
-            
-            // Exemplo de imagens iniciais
-            images = [
-                { id: 1, name: 'pistola-w77.jpg', url: 'https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80', size: '45.2 KB', date: '15/10/2023' },
-                { id: 2, name: 'bico-xhd.jpg', url: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80', size: '38.7 KB', date: '14/10/2023' }
-            ];
-            loadImages();
-            
-            // Busca de produtos
-            document.getElementById('product-search').addEventListener('keyup', function(e) {
-                if (e.key === 'Enter') searchProducts();
+            // Ajustar layout no resize
+            window.addEventListener('resize', function() {
+                if (window.innerWidth <= 768) {
+                    document.querySelector('.main-menu').style.display = 'none';
+                } else {
+                    document.querySelector('.main-menu').style.display = 'flex';
+                }
             });
         });
     </script>
