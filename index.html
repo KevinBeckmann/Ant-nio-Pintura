@@ -1131,7 +1131,8 @@
             apiKey: "AIzaSyDFrUoiGwoYpicuXlCFR8nyteoZYQzPdEI",
             authDomain: "new-era-95622.firebaseapp.com",
             projectId: "new-era-95622",
-            storageBucket: "new-era-95622.firebasestorage.app",
+            // CONFIRA ESTE VALOR NO CONSOLE DO FIREBASE
+            storageBucket: "new-era-95622.appspot.com",
             messagingSenderId: "538728621860",
             appId: "1:538728621860:web:8c4fe9cbda8a188904b5b1"
         };
@@ -1162,7 +1163,7 @@
         
         let images = JSON.parse(localStorage.getItem('images')) || [];
         let uploadedFiles = [];
-        let productImageFiles = []; // arquivos selecionados para o produto
+        let productImageFiles = []; // arquivos de imagem do produto
         let editingProductId = null;
         let editingCategoryId = null;
         let currentCategory = 'all';
@@ -1564,7 +1565,7 @@
                 loadCatalog();
             } catch (error) {
                 console.error('Erro ao salvar produto/imagens:', error);
-                showNotification('error', 'Erro ao enviar imagens do produto');
+                showNotification('error', 'Erro ao enviar imagens do produto. Veja o console do navegador.');
             }
         }
         
