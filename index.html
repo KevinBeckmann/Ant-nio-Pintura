@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catálogo Completo - PINTANDO QUALIDADE</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Firebase SDKs (MODO COMPAT, sem import) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
+
     <style>
         * {
             margin: 0;
@@ -1118,7 +1124,25 @@
     </div>
 
     <script>
-        // Dados do sistema
+        /****************************************************
+         * 1) CONFIGURAÇÃO DO FIREBASE
+         ****************************************************/
+        const firebaseConfig = {
+            apiKey: "AIzaSyDFrUoiGwoYpicuXlCFR8nyteoZYQzPdEI",
+            authDomain: "new-era-95622.firebaseapp.com",
+            projectId: "new-era-95622",
+            storageBucket: "new-era-95622.firebasestorage.app",
+            messagingSenderId: "538728621860",
+            appId: "1:538728621860:web:8c4fe9cbda8a188904b5b1"
+        };
+
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const storage = firebase.storage();
+
+        /****************************************************
+         * 2) DADOS LOCAIS (ainda usando localStorage)
+         ****************************************************/
         let products = JSON.parse(localStorage.getItem('products')) || [
             { id: 1, ref: '770005', name: 'PISTOLA W77 - 1.5', category: 'pistols-conventional', brand: 'W77', description: 'Pistola convencional para pintura', images: [], status: 'active' },
             { id: 2, ref: '917591', name: 'PISTOLA W71 - 1.5', category: 'pistols-conventional', brand: 'W71', description: 'Pistola convencional de alta performance', images: [], status: 'active' },
@@ -1138,11 +1162,12 @@
         
         let images = JSON.parse(localStorage.getItem('images')) || [];
         let uploadedFiles = [];
+        let productImageFiles = []; // arquivos selecionados para o produto
         let editingProductId = null;
         let editingCategoryId = null;
         let currentCategory = 'all';
         
-        // Mostrar notificação
+        // Notificação
         function showNotification(type, message) {
             const notification = document.getElementById('notification');
             const notificationText = document.getElementById('notification-text');
@@ -1162,7 +1187,7 @@
             }, 3000);
         }
         
-        // Navegação entre páginas
+        // Navegação
         function navigateTo(page) {
             document.querySelectorAll('.main-content').forEach(content => {
                 content.classList.remove('active');
@@ -1183,16 +1208,15 @@
             }
         }
         
-        // Carregar catálogo
+        // Catálogo
         function loadCatalog() {
             loadProductsByCategory(currentCategory);
             setupCategoryNavigation();
         }
         
-        // Navegação por categorias
         function setupCategoryNavigation() {
             document.querySelectorAll('.category-item').forEach(item => {
-                item.addEventListener('click', function() {
+                item.onclick = function() {
                     const category = this.dataset.category;
                     currentCategory = category;
                     
@@ -1202,11 +1226,10 @@
                     this.classList.add('active');
                     
                     loadProductsByCategory(category);
-                });
+                };
             });
         }
         
-        // Carregar produtos por categoria
         function loadProductsByCategory(category) {
             const productsGrid = document.getElementById('products-grid');
             productsGrid.innerHTML = '';
@@ -1236,12 +1259,17 @@
             
             filteredProducts.forEach(product => {
                 const categoryInfo = categories.find(c => c.id == product.category.split('-')[0]) || { name: product.category };
+
+                const firstImage = Array.isArray(product.images) && product.images.length > 0
+                    ? `<img src="${product.images[0]}" class="product-image" alt="${product.name}">`
+                    : '';
                 
                 const productCard = document.createElement('div');
                 productCard.className = 'product-card';
                 productCard.innerHTML = `
                     <div class="product-ref">REF: ${product.ref}</div>
                     <h3 class="product-name">${product.name}</h3>
+                    ${firstImage}
                     <div style="margin-bottom: 15px;">
                         <span style="background: #f1f5f9; color: #475569; padding: 4px 10px; border-radius: 15px; font-size: 0.85rem; display: inline-block; margin-bottom: 5px;">
                             ${product.brand}
@@ -1263,7 +1291,6 @@
             });
         }
         
-        // Visualizar produto
         function viewProduct(id) {
             const product = products.find(p => p.id === id);
             if (!product) return;
@@ -1273,7 +1300,7 @@
             alert(`Detalhes do Produto:\n\nREF: ${product.ref}\nNome: ${product.name}\nMarca: ${product.brand}\nCategoria: ${categoryInfo.name}\nDescrição: ${product.description || 'Não disponível'}\n\nPara orçamento, entre em contato: (11) 3456-7890`);
         }
         
-        // Painel Administrativo - Dashboard
+        // Dashboard
         function showDashboard() {
             document.getElementById('admin-dashboard').style.display = 'block';
             document.getElementById('admin-products').style.display = 'none';
@@ -1281,13 +1308,11 @@
             document.getElementById('admin-images').style.display = 'none';
             document.getElementById('admin-settings').style.display = 'none';
             
-            // Atualizar estatísticas
             document.getElementById('total-products').textContent = products.length;
             document.getElementById('total-categories').textContent = categories.length;
             document.getElementById('total-images').textContent = images.length;
-            document.getElementById('total-users').textContent = 3; // Fixo por enquanto
+            document.getElementById('total-users').textContent = 3;
             
-            // Carregar últimos produtos
             const recentProducts = document.getElementById('recent-products');
             recentProducts.innerHTML = '';
             
@@ -1314,7 +1339,7 @@
             });
         }
         
-        // Painel Administrativo - Produtos
+        // Admin Produtos
         function showProductsAdmin() {
             document.getElementById('admin-dashboard').style.display = 'none';
             document.getElementById('admin-products').style.display = 'block';
@@ -1352,7 +1377,7 @@
             });
         }
         
-        // Painel Administrativo - Categorias
+        // Admin Categorias
         function showCategoriesAdmin() {
             document.getElementById('admin-dashboard').style.display = 'none';
             document.getElementById('admin-products').style.display = 'none';
@@ -1395,7 +1420,7 @@
             });
         }
         
-        // Painel Administrativo - Imagens
+        // Admin Imagens
         function showImagesAdmin() {
             document.getElementById('admin-dashboard').style.display = 'none';
             document.getElementById('admin-products').style.display = 'none';
@@ -1407,7 +1432,7 @@
             setupImageUpload();
         }
         
-        // Painel Administrativo - Configurações
+        // Admin Configurações
         function showSettingsAdmin() {
             document.getElementById('admin-dashboard').style.display = 'none';
             document.getElementById('admin-products').style.display = 'none';
@@ -1418,13 +1443,16 @@
             loadSettings();
         }
         
-        // Modal de Produto
+        // Modal Produto (com captura de arquivos)
         function openProductModal(productId = null) {
             editingProductId = productId;
             const modal = document.getElementById('product-modal');
             const title = document.getElementById('product-modal-title');
-            
-            // Carregar categorias
+
+            productImageFiles = [];
+            const productImageInput = document.getElementById('product-image-input');
+            productImageInput.value = "";
+
             const categorySelect = document.getElementById('product-category');
             categorySelect.innerHTML = '<option value="">Selecione uma categoria</option>';
             categories.forEach(category => {
@@ -1453,6 +1481,10 @@
                 document.getElementById('product-brand').value = '';
                 document.getElementById('product-description').value = '';
             }
+
+            productImageInput.onchange = function (event) {
+                productImageFiles = Array.from(event.target.files);
+            };
             
             modal.classList.add('active');
         }
@@ -1460,9 +1492,10 @@
         function closeProductModal() {
             document.getElementById('product-modal').classList.remove('active');
             editingProductId = null;
+            productImageFiles = [];
         }
         
-        function saveProduct() {
+        async function saveProduct() {
             const ref = document.getElementById('product-ref').value.trim();
             const name = document.getElementById('product-name').value.trim();
             const category = document.getElementById('product-category').value;
@@ -1473,17 +1506,24 @@
                 showNotification('error', 'Preencha REF, Nome e Categoria');
                 return;
             }
-            
+
+            let product;
             if (editingProductId) {
-                // Atualizar
                 const index = products.findIndex(p => p.id === editingProductId);
                 if (index !== -1) {
-                    products[index] = { ...products[index], ref, name, category, brand, description };
+                    products[index] = { 
+                        ...products[index], 
+                        ref, 
+                        name, 
+                        category, 
+                        brand, 
+                        description 
+                    };
+                    product = products[index];
                 }
-                showNotification('success', 'Produto atualizado!');
+                showNotification('info', 'Atualizando produto...');
             } else {
-                // Novo
-                const newProduct = {
+                product = {
                     id: products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1,
                     ref,
                     name,
@@ -1493,14 +1533,39 @@
                     images: [],
                     status: 'active'
                 };
-                products.push(newProduct);
-                showNotification('success', 'Produto cadastrado!');
+                products.push(product);
+                showNotification('info', 'Cadastrando produto...');
             }
-            
-            saveData();
-            closeProductModal();
-            loadProductsAdmin();
-            loadCatalog();
+
+            try {
+                if (productImageFiles.length > 0) {
+                    showNotification('info', 'Enviando imagens do produto...');
+
+                    const uploadPromises = productImageFiles.map(file => {
+                        const storageRef = storage.ref().child(`products/${product.id}/${Date.now()}_${file.name}`);
+                        return storageRef
+                            .put(file)
+                            .then(snapshot => snapshot.ref.getDownloadURL());
+                    });
+
+                    const urls = await Promise.all(uploadPromises);
+
+                    if (!Array.isArray(product.images)) {
+                        product.images = [];
+                    }
+                    product.images.push(...urls);
+                }
+
+                saveData();
+
+                showNotification('success', editingProductId ? 'Produto atualizado!' : 'Produto cadastrado!');
+                closeProductModal();
+                loadProductsAdmin();
+                loadCatalog();
+            } catch (error) {
+                console.error('Erro ao salvar produto/imagens:', error);
+                showNotification('error', 'Erro ao enviar imagens do produto');
+            }
         }
         
         function editProduct(id) {
@@ -1569,7 +1634,7 @@
             });
         }
         
-        // Modal de Categoria
+        // Modal Categoria
         function openCategoryModal(categoryId = null) {
             editingCategoryId = categoryId;
             const modal = document.getElementById('category-modal');
@@ -1610,14 +1675,12 @@
             }
             
             if (editingCategoryId) {
-                // Atualizar
                 const index = categories.findIndex(c => c.id === editingCategoryId);
                 if (index !== -1) {
                     categories[index] = { ...categories[index], name, description, icon };
                 }
                 showNotification('success', 'Categoria atualizada!');
             } else {
-                // Nova
                 const newCategory = {
                     id: categories.length > 0 ? Math.max(...categories.map(c => c.id)) + 1 : 1,
                     name,
@@ -1660,12 +1723,11 @@
             }
         }
         
-        // Upload de Imagens
+        // Upload de Imagens (galeria geral)
         function setupImageUpload() {
             const dropArea = document.getElementById('upload-area');
             const fileInput = document.getElementById('image-input');
             
-            // Prevenir comportamento padrão
             ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
                 dropArea.addEventListener(eventName, preventDefaults, false);
             });
@@ -1675,7 +1737,6 @@
                 e.stopPropagation();
             }
             
-            // Destacar área
             ['dragenter', 'dragover'].forEach(eventName => {
                 dropArea.addEventListener(eventName, () => dropArea.style.borderColor = '#3b82f6', false);
             });
@@ -1684,7 +1745,6 @@
                 dropArea.addEventListener(eventName, () => dropArea.style.borderColor = '#cbd5e1', false);
             });
             
-            // Lidar com drop
             dropArea.addEventListener('drop', handleDrop, false);
             
             function handleDrop(e) {
@@ -1692,7 +1752,6 @@
                 handleFiles(files);
             }
             
-            // Lidar com seleção
             fileInput.addEventListener('change', function() {
                 handleFiles(this.files);
             });
@@ -1834,7 +1893,7 @@
             showNotification('success', 'Configurações salvas!');
         }
         
-        // Salvar dados
+        // Persistência local
         function saveData() {
             localStorage.setItem('products', JSON.stringify(products));
             localStorage.setItem('categories', JSON.stringify(categories));
@@ -1854,24 +1913,20 @@
             menu.style.display = menu.style.display === 'none' ? 'flex' : 'none';
         });
         
-        // Inicializar
+        // Inicialização
         document.addEventListener('DOMContentLoaded', function() {
-            // Configurar navegação
             document.querySelectorAll('.main-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
                     navigateTo(this.dataset.page);
                 });
             });
             
-            // Carregar catálogo inicial
             loadCatalog();
             
-            // Ajustar menu mobile
             if (window.innerWidth <= 768) {
                 document.querySelector('.main-menu').style.display = 'none';
             }
             
-            // Ajustar layout no resize
             window.addEventListener('resize', function() {
                 if (window.innerWidth <= 768) {
                     document.querySelector('.main-menu').style.display = 'none';
