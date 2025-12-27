@@ -6,11 +6,6 @@
     <title>Catálogo Completo - PINTANDO QUALIDADE</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- Firebase SDKs (MODO COMPAT, sem import) -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
-
     <style>
         * {
             margin: 0;
@@ -429,7 +424,7 @@
             border-color: #3b82f6;
         }
         
-        /* Upload de Imagens */
+        /* Upload de Imagens (admin geral, não produto) */
         .upload-area {
             border: 2px dashed #cbd5e1;
             border-radius: 12px;
@@ -544,45 +539,6 @@
             background: linear-gradient(135deg, #ef4444, #f87171);
         }
         
-        /* Ações em Tabela */
-        .table-actions {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-        
-        .action-icon {
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            border: none;
-            transition: all 0.3s ease;
-        }
-        
-        .action-edit {
-            background: rgba(59, 130, 246, 0.1);
-            color: #3b82f6;
-        }
-        
-        .action-edit:hover {
-            background: #3b82f6;
-            color: white;
-        }
-        
-        .action-delete {
-            background: rgba(239, 68, 68, 0.1);
-            color: #ef4444;
-        }
-        
-        .action-delete:hover {
-            background: #ef4444;
-            color: white;
-        }
-        
         /* Layout Responsivo com Grid */
         .catalog-layout {
             display: grid;
@@ -596,30 +552,18 @@
             }
         }
         
-        /* Badges */
-        .badge {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
+        /* Imagem do Produto */
+        .product-image {
+            width: 100%;
+            max-width: 300px;
+            height: 200px;
+            border-radius: 10px;
+            object-fit: cover;
+            margin: 0 auto 15px;
+            display: block;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
-        
-        .badge-success {
-            background: rgba(16, 185, 129, 0.1);
-            color: #10b981;
-        }
-        
-        .badge-danger {
-            background: rgba(239, 68, 68, 0.1);
-            color: #ef4444;
-        }
-        
-        .badge-info {
-            background: rgba(59, 130, 246, 0.1);
-            color: #3b82f6;
-        }
-        
+
         /* Menu Mobile */
         .mobile-menu-toggle {
             display: none;
@@ -641,65 +585,6 @@
             .mobile-menu-toggle {
                 display: block;
             }
-        }
-        
-        /* Estatísticas */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-        
-        .stat-card {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            border-left: 5px solid #3b82f6;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            transition: transform 0.3s ease;
-        }
-        
-        .stat-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .stat-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.3rem;
-            color: white;
-            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
-        }
-        
-        .stat-info h3 {
-            font-size: 1.8rem;
-            color: #1e3a8a;
-            margin-bottom: 5px;
-        }
-        
-        .stat-info p {
-            color: #64748b;
-            font-size: 0.85rem;
-        }
-        
-        /* Imagem do Produto */
-        .product-image {
-            width: 100%;
-            max-width: 300px;
-            height: 200px;
-            border-radius: 10px;
-            object-fit: cover;
-            margin: 0 auto 20px;
-            display: block;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
@@ -780,13 +665,13 @@
             </div>
         </div>
         
-        <!-- Painel Administrativo -->
+        <!-- Painel Administrativo (somente visual/local) -->
         <div class="main-content" id="admin-page">
             <div class="admin-panel active">
                 <div class="admin-header">
                     <h1 class="admin-title">
                         <i class="fas fa-user-cog"></i>
-                        Painel Administrativo
+                        Painel Administrativo (local)
                     </h1>
                     <div>
                         <button class="action-btn btn-primary" onclick="showDashboard()">
@@ -806,7 +691,7 @@
                                 <i class="fas fa-box"></i>
                             </div>
                             <div class="stat-info">
-                                <h3 id="total-products">48</h3>
+                                <h3 id="total-products">0</h3>
                                 <p>Produtos</p>
                             </div>
                         </div>
@@ -816,7 +701,7 @@
                                 <i class="fas fa-list"></i>
                             </div>
                             <div class="stat-info">
-                                <h3 id="total-categories">7</h3>
+                                <h3 id="total-categories">0</h3>
                                 <p>Categorias</p>
                             </div>
                         </div>
@@ -826,8 +711,8 @@
                                 <i class="fas fa-images"></i>
                             </div>
                             <div class="stat-info">
-                                <h3 id="total-images">12</h3>
-                                <p>Imagens</p>
+                                <h3 id="total-images">0</h3>
+                                <p>Imagens (locais)</p>
                             </div>
                         </div>
                         
@@ -836,8 +721,8 @@
                                 <i class="fas fa-users"></i>
                             </div>
                             <div class="stat-info">
-                                <h3 id="total-users">3</h3>
-                                <p>Usuários</p>
+                                <h3 id="total-users">1</h3>
+                                <p>Usuários (somente você)</p>
                             </div>
                         </div>
                     </div>
@@ -845,16 +730,13 @@
                     <!-- Menu do Admin -->
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 25px;">
                         <button class="action-btn btn-primary" onclick="showProductsAdmin()" style="justify-content: center;">
-                            <i class="fas fa-box"></i> Gerenciar Produtos
+                            <i class="fas fa-box"></i> Gerenciar Produtos (local)
                         </button>
                         <button class="action-btn btn-primary" onclick="showCategoriesAdmin()" style="justify-content: center;">
-                            <i class="fas fa-list"></i> Gerenciar Categorias
-                        </button>
-                        <button class="action-btn btn-primary" onclick="showImagesAdmin()" style="justify-content: center;">
-                            <i class="fas fa-images"></i> Gerenciar Imagens
+                            <i class="fas fa-list"></i> Gerenciar Categorias (local)
                         </button>
                         <button class="action-btn btn-primary" onclick="showSettingsAdmin()" style="justify-content: center;">
-                            <i class="fas fa-cog"></i> Configurações
+                            <i class="fas fa-cog"></i> Configurações (locais)
                         </button>
                     </div>
                     
@@ -877,15 +759,15 @@
                     </div>
                 </div>
                 
-                <!-- Gerenciar Produtos -->
+                <!-- Gerenciar Produtos (apenas em memória) -->
                 <div id="admin-products" style="display: none;">
                     <div class="admin-header">
                         <h2 class="admin-title">
                             <i class="fas fa-box"></i>
-                            Gerenciar Produtos
+                            Gerenciar Produtos (somente nesta máquina)
                         </h2>
                         <button class="action-btn btn-success" onclick="openProductModal()">
-                            <i class="fas fa-plus"></i> Novo Produto
+                            <i class="fas fa-plus"></i> Novo Produto (local)
                         </button>
                     </div>
                     
@@ -919,11 +801,8 @@
                     <div class="admin-header">
                         <h2 class="admin-title">
                             <i class="fas fa-list"></i>
-                            Gerenciar Categorias
+                            Gerenciar Categorias (local)
                         </h2>
-                        <button class="action-btn btn-success" onclick="openCategoryModal()">
-                            <i class="fas fa-plus"></i> Nova Categoria
-                        </button>
                     </div>
                     
                     <div class="table-container">
@@ -934,7 +813,6 @@
                                     <th>Nome</th>
                                     <th>Descrição</th>
                                     <th>Produtos</th>
-                                    <th>Ações</th>
                                 </tr>
                             </thead>
                             <tbody id="categories-list">
@@ -944,55 +822,12 @@
                     </div>
                 </div>
                 
-                <!-- Gerenciar Imagens -->
-                <div id="admin-images" style="display: none;">
-                    <div class="admin-header">
-                        <h2 class="admin-title">
-                            <i class="fas fa-images"></i>
-                            Gerenciar Imagens
-                        </h2>
-                    </div>
-                    
-                    <div class="form-container">
-                        <h3 class="form-title">Enviar Imagens do Celular/Computador</h3>
-                        
-                        <div class="upload-area" id="upload-area" onclick="document.getElementById('image-input').click()">
-                            <div class="upload-icon">
-                                <i class="fas fa-cloud-upload-alt"></i>
-                            </div>
-                            <div style="color: #64748b;">
-                                <p><strong>Clique para selecionar imagens</strong></p>
-                                <p>ou arraste e solte aqui</p>
-                                <p style="font-size: 0.9rem; margin-top: 10px;">Suporta JPG, PNG, GIF até 10MB</p>
-                            </div>
-                            <input type="file" class="file-input" id="image-input" accept="image/*" multiple>
-                        </div>
-                        
-                        <div class="gallery-grid" id="image-preview">
-                            <!-- Prévia das imagens -->
-                        </div>
-                        
-                        <div style="text-align: center; margin-top: 20px;">
-                            <button class="action-btn btn-success" onclick="uploadImages()">
-                                <i class="fas fa-upload"></i> Enviar Todas as Imagens
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="form-container">
-                        <h3 class="form-title">Galeria de Imagens</h3>
-                        <div class="gallery-grid" id="gallery-images">
-                            <!-- Galeria de imagens -->
-                        </div>
-                    </div>
-                </div>
-                
                 <!-- Configurações -->
                 <div id="admin-settings" style="display: none;">
                     <div class="admin-header">
                         <h2 class="admin-title">
                             <i class="fas fa-cog"></i>
-                            Configurações do Sistema
+                            Configurações do Sistema (somente local)
                         </h2>
                     </div>
                     
@@ -1014,7 +849,7 @@
                         
                         <div style="text-align: center; margin-top: 25px;">
                             <button class="action-btn btn-success" onclick="saveSettings()">
-                                <i class="fas fa-save"></i> Salvar Configurações
+                                <i class="fas fa-save"></i> Salvar Configurações (local)
                             </button>
                         </div>
                     </div>
@@ -1062,57 +897,32 @@
                     <label class="form-label">Descrição</label>
                     <textarea class="form-control" id="product-description" rows="3"></textarea>
                 </div>
-                
+
                 <div class="form-group">
-                    <label class="form-label">Imagens do Produto</label>
-                    <div class="upload-area" onclick="document.getElementById('product-image-input').click()" style="padding: 15px;">
-                        <i class="fas fa-camera" style="color: #3b82f6; font-size: 1.5rem; margin-bottom: 10px;"></i>
-                        <p style="color: #64748b; margin: 0;">Clique para adicionar imagens</p>
-                        <input type="file" class="file-input" id="product-image-input" accept="image/*" multiple>
-                    </div>
+                    <label class="form-label">Nome do arquivo de imagem (na pasta img/produtos)</label>
+                    <input type="text" class="form-control" id="product-image-filename" placeholder="ex: 770005-1.jpg">
+                    <small style="color:#64748b;">Você deve enviar o arquivo manualmente para <strong>img/produtos/</strong> no repositório.</small>
                 </div>
             </div>
             <div style="padding: 20px; border-top: 2px solid #e2e8f0; display: flex; justify-content: flex-end; gap: 10px;">
                 <button class="action-btn btn-primary" onclick="closeProductModal()">Cancelar</button>
-                <button class="action-btn btn-success" onclick="saveProduct()">Salvar Produto</button>
+                <button class="action-btn btn-success" onclick="saveProduct()">Salvar Produto (local)</button>
             </div>
         </div>
     </div>
     
-    <!-- Modal de Categoria -->
+    <!-- Modal de Categoria (somente visual, poderíamos tirar, mas mantive para não quebrar fluxo) -->
     <div class="modal-overlay" id="category-modal">
         <div class="modal">
             <div style="padding: 20px; border-bottom: 2px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center;">
-                <h3 style="color: #1e3a8a; font-size: 1.4rem;" id="category-modal-title">Nova Categoria</h3>
+                <h3 style="color: #1e3a8a; font-size: 1.4rem;" id="category-modal-title">Categoria</h3>
                 <button onclick="closeCategoryModal()" style="background: none; border: none; font-size: 1.5rem; color: #64748b; cursor: pointer;">&times;</button>
             </div>
             <div style="padding: 20px;">
-                <div class="form-group">
-                    <label class="form-label">Nome da Categoria</label>
-                    <input type="text" class="form-control" id="category-name">
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">Descrição</label>
-                    <textarea class="form-control" id="category-description" rows="3"></textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">Ícone</label>
-                    <select class="form-control" id="category-icon">
-                        <option value="fas fa-spray-can">Pistola</option>
-                        <option value="fas fa-wind">Airless</option>
-                        <option value="fas fa-filter">Bico</option>
-                        <option value="fas fa-oil-can">Bomba</option>
-                        <option value="fas fa-fill-drip">Tanque</option>
-                        <option value="fas fa-tools">Ferramenta</option>
-                        <option value="fas fa-box">Geral</option>
-                    </select>
-                </div>
+                <p>Gerenciamento de categorias pode ser feito diretamente no código JavaScript (lista <code>categories</code>).</p>
             </div>
             <div style="padding: 20px; border-top: 2px solid #e2e8f0; display: flex; justify-content: flex-end; gap: 10px;">
-                <button class="action-btn btn-primary" onclick="closeCategoryModal()">Cancelar</button>
-                <button class="action-btn btn-success" onclick="saveCategory()">Salvar Categoria</button>
+                <button class="action-btn btn-primary" onclick="closeCategoryModal()">Fechar</button>
             </div>
         </div>
     </div>
@@ -1125,50 +935,74 @@
 
     <script>
         /****************************************************
-         * 1) CONFIGURAÇÃO DO FIREBASE
+         * DADOS ESTÁTICOS COM IMAGENS NO REPOSITÓRIO
+         * Pasta sugerida: img/produtos/
          ****************************************************/
-        const firebaseConfig = {
-            apiKey: "AIzaSyDFrUoiGwoYpicuXlCFR8nyteoZYQzPdEI",
-            authDomain: "new-era-95622.firebaseapp.com",
-            projectId: "new-era-95622",
-            // CONFIRA ESTE VALOR NO CONSOLE DO FIREBASE
-            storageBucket: "new-era-95622.appspot.com",
-            messagingSenderId: "538728621860",
-            appId: "1:538728621860:web:8c4fe9cbda8a188904b5b1"
-        };
-
-        const app = firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-        const storage = firebase.storage();
-
-        /****************************************************
-         * 2) DADOS LOCAIS (ainda usando localStorage)
-         ****************************************************/
-        let products = JSON.parse(localStorage.getItem('products')) || [
-            { id: 1, ref: '770005', name: 'PISTOLA W77 - 1.5', category: 'pistols-conventional', brand: 'W77', description: 'Pistola convencional para pintura', images: [], status: 'active' },
-            { id: 2, ref: '917591', name: 'PISTOLA W71 - 1.5', category: 'pistols-conventional', brand: 'W71', description: 'Pistola convencional de alta performance', images: [], status: 'active' },
-            { id: 3, ref: '917555', name: 'PISTOLA AIRLESS VERTICAL - 395', category: 'pistols-airless', brand: '395', description: 'Pistola airless vertical', images: [], status: 'active' },
-            { id: 4, ref: '915848', name: 'BICO AIRLESS XHD 107', category: 'nozzles-xhd', brand: 'XHD', description: 'Bico airless XHD tamanho 107', images: [], status: 'active' },
-            { id: 5, ref: '6256000610', name: 'LIXADEIRA ROTO ORBITAL PNEUM LPS10 VONDER', category: 'tools', brand: 'VONDER', description: 'Lixadeira pneumática orbital', images: [], status: 'active' }
+        const products = [
+            {
+                id: 1,
+                ref: '770005',
+                name: 'PISTOLA W77 - 1.5',
+                category: 'pistols-conventional',
+                brand: 'W77',
+                description: 'Pistola convencional para pintura',
+                images: ['img/produtos/770005-1.jpg'],
+                status: 'active'
+            },
+            {
+                id: 2,
+                ref: '917591',
+                name: 'PISTOLA W71 - 1.5',
+                category: 'pistols-conventional',
+                brand: 'W71',
+                description: 'Pistola convencional de alta performance',
+                images: ['img/produtos/917591-1.jpg'],
+                status: 'active'
+            },
+            {
+                id: 3,
+                ref: '917555',
+                name: 'PISTOLA AIRLESS VERTICAL - 395',
+                category: 'pistols-airless',
+                brand: '395',
+                description: 'Pistola airless vertical',
+                images: ['img/produtos/917555-1.jpg'],
+                status: 'active'
+            },
+            {
+                id: 4,
+                ref: '915848',
+                name: 'BICO AIRLESS XHD 107',
+                category: 'nozzles-xhd',
+                brand: 'XHD',
+                description: 'Bico airless XHD tamanho 107',
+                images: ['img/produtos/915848-1.jpg'],
+                status: 'active'
+            },
+            {
+                id: 5,
+                ref: '6256000610',
+                name: 'LIXADEIRA ROTO ORBITAL PNEUM LPS10 VONDER',
+                category: 'tools',
+                brand: 'VONDER',
+                description: 'Lixadeira pneumática orbital',
+                images: ['img/produtos/6256000610-1.jpg'],
+                status: 'active'
+            }
         ];
-        
-        let categories = JSON.parse(localStorage.getItem('categories')) || [
-            { id: 1, name: 'Pistolas Convencionais', description: 'Pistolas de pintura convencional', icon: 'fas fa-spray-can', status: 'active' },
-            { id: 2, name: 'Pistolas Airless', description: 'Pistolas de pintura airless', icon: 'fas fa-wind', status: 'active' },
-            { id: 3, name: 'Bicos XHD', description: 'Bicos e suportes XHD para airless', icon: 'fas fa-filter', status: 'active' },
-            { id: 4, name: 'Bombas', description: 'Bombas de duplo diafragma', icon: 'fas fa-oil-can', status: 'active' },
-            { id: 5, name: 'Tanques', description: 'Tanques de pintura e agitadores', icon: 'fas fa-fill-drip', status: 'active' },
-            { id: 6, name: 'Ferramentas', description: 'Ferramentas pneumáticas', icon: 'fas fa-tools', status: 'active' }
+
+        const categories = [
+            { id: 1, name: 'Pistolas Convencionais', description: 'Pistolas de pintura convencional', icon: 'fas fa-spray-can', code: 'pistols-conventional' },
+            { id: 2, name: 'Pistolas Airless', description: 'Pistolas de pintura airless', icon: 'fas fa-wind', code: 'pistols-airless' },
+            { id: 3, name: 'Bicos XHD', description: 'Bicos e suportes XHD para airless', icon: 'fas fa-filter', code: 'nozzles-xhd' },
+            { id: 4, name: 'Bombas', description: 'Bombas de duplo diafragma', icon: 'fas fa-oil-can', code: 'bombs' },
+            { id: 5, name: 'Tanques', description: 'Tanques de pintura e agitadores', icon: 'fas fa-fill-drip', code: 'tanks' },
+            { id: 6, name: 'Ferramentas', description: 'Ferramentas pneumáticas', icon: 'fas fa-tools', code: 'tools' }
         ];
-        
-        let images = JSON.parse(localStorage.getItem('images')) || [];
-        let uploadedFiles = [];
-        let productImageFiles = []; // arquivos de imagem do produto
-        let editingProductId = null;
-        let editingCategoryId = null;
+
         let currentCategory = 'all';
-        
-        // Notificação
+        let editingProductId = null;
+
         function showNotification(type, message) {
             const notification = document.getElementById('notification');
             const notificationText = document.getElementById('notification-text');
@@ -1187,8 +1021,7 @@
                 notification.classList.remove('show');
             }, 3000);
         }
-        
-        // Navegação
+
         function navigateTo(page) {
             document.querySelectorAll('.main-content').forEach(content => {
                 content.classList.remove('active');
@@ -1208,13 +1041,12 @@
                 showDashboard();
             }
         }
-        
-        // Catálogo
+
         function loadCatalog() {
             loadProductsByCategory(currentCategory);
             setupCategoryNavigation();
         }
-        
+
         function setupCategoryNavigation() {
             document.querySelectorAll('.category-item').forEach(item => {
                 item.onclick = function() {
@@ -1230,7 +1062,7 @@
                 };
             });
         }
-        
+
         function loadProductsByCategory(category) {
             const productsGrid = document.getElementById('products-grid');
             productsGrid.innerHTML = '';
@@ -1243,7 +1075,7 @@
                 document.getElementById('category-description').textContent = 'Catálogo completo de equipamentos para pintura';
             } else {
                 filteredProducts = products.filter(p => p.category === category);
-                const categoryInfo = categories.find(c => c.id == category.split('-')[0]) || { name: category };
+                const categoryInfo = categories.find(c => c.code === category) || { name: category };
                 document.getElementById('category-title').textContent = categoryInfo.name;
                 document.getElementById('category-description').textContent = categoryInfo.description || 'Produtos desta categoria';
             }
@@ -1259,8 +1091,7 @@
             }
             
             filteredProducts.forEach(product => {
-                const categoryInfo = categories.find(c => c.id == product.category.split('-')[0]) || { name: product.category };
-
+                const categoryInfo = categories.find(c => c.code === product.category) || { name: product.category };
                 const firstImage = Array.isArray(product.images) && product.images.length > 0
                     ? `<img src="${product.images[0]}" class="product-image" alt="${product.name}">`
                     : '';
@@ -1291,35 +1122,33 @@
                 productsGrid.appendChild(productCard);
             });
         }
-        
+
         function viewProduct(id) {
             const product = products.find(p => p.id === id);
             if (!product) return;
             
-            const categoryInfo = categories.find(c => c.id == product.category.split('-')[0]) || { name: product.category };
-            
+            const categoryInfo = categories.find(c => c.code === product.category) || { name: product.category };
             alert(`Detalhes do Produto:\n\nREF: ${product.ref}\nNome: ${product.name}\nMarca: ${product.brand}\nCategoria: ${categoryInfo.name}\nDescrição: ${product.description || 'Não disponível'}\n\nPara orçamento, entre em contato: (11) 3456-7890`);
         }
-        
+
         // Dashboard
         function showDashboard() {
             document.getElementById('admin-dashboard').style.display = 'block';
             document.getElementById('admin-products').style.display = 'none';
             document.getElementById('admin-categories').style.display = 'none';
-            document.getElementById('admin-images').style.display = 'none';
             document.getElementById('admin-settings').style.display = 'none';
             
             document.getElementById('total-products').textContent = products.length;
             document.getElementById('total-categories').textContent = categories.length;
-            document.getElementById('total-images').textContent = images.length;
-            document.getElementById('total-users').textContent = 3;
+            document.getElementById('total-images').textContent = products.reduce((acc, p) => acc + (p.images ? p.images.length : 0), 0);
+            document.getElementById('total-users').textContent = 1;
             
             const recentProducts = document.getElementById('recent-products');
             recentProducts.innerHTML = '';
             
             const lastProducts = [...products].slice(-5);
             lastProducts.forEach(product => {
-                const categoryInfo = categories.find(c => c.id == product.category.split('-')[0]) || { name: product.category };
+                const categoryInfo = categories.find(c => c.code === product.category) || { name: product.category };
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${product.ref}</td>
@@ -1339,24 +1168,22 @@
                 recentProducts.appendChild(row);
             });
         }
-        
-        // Admin Produtos
+
         function showProductsAdmin() {
             document.getElementById('admin-dashboard').style.display = 'none';
             document.getElementById('admin-products').style.display = 'block';
             document.getElementById('admin-categories').style.display = 'none';
-            document.getElementById('admin-images').style.display = 'none';
             document.getElementById('admin-settings').style.display = 'none';
             
             loadProductsAdmin();
         }
-        
+
         function loadProductsAdmin() {
             const productsList = document.getElementById('products-list');
             productsList.innerHTML = '';
             
             products.forEach(product => {
-                const categoryInfo = categories.find(c => c.id == product.category.split('-')[0]) || { name: product.category };
+                const categoryInfo = categories.find(c => c.code === product.category) || { name: product.category };
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${product.ref}</td>
@@ -1377,24 +1204,22 @@
                 productsList.appendChild(row);
             });
         }
-        
-        // Admin Categorias
+
         function showCategoriesAdmin() {
             document.getElementById('admin-dashboard').style.display = 'none';
             document.getElementById('admin-products').style.display = 'none';
             document.getElementById('admin-categories').style.display = 'block';
-            document.getElementById('admin-images').style.display = 'none';
             document.getElementById('admin-settings').style.display = 'none';
             
             loadCategoriesAdmin();
         }
-        
+
         function loadCategoriesAdmin() {
             const categoriesList = document.getElementById('categories-list');
             categoriesList.innerHTML = '';
             
             categories.forEach(category => {
-                const productCount = products.filter(p => p.category === category.name.toLowerCase().replace(/ /g, '-')).length;
+                const productCount = products.filter(p => p.category === category.code).length;
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${category.id}</td>
@@ -1406,65 +1231,34 @@
                     </td>
                     <td>${category.description}</td>
                     <td>${productCount}</td>
-                    <td>
-                        <div class="table-actions">
-                            <button class="action-icon action-edit" onclick="editCategory(${category.id})">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="action-icon action-delete" onclick="deleteCategory(${category.id})">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    </td>
                 `;
                 categoriesList.appendChild(row);
             });
         }
-        
-        // Admin Imagens
-        function showImagesAdmin() {
-            document.getElementById('admin-dashboard').style.display = 'none';
-            document.getElementById('admin-products').style.display = 'none';
-            document.getElementById('admin-categories').style.display = 'none';
-            document.getElementById('admin-images').style.display = 'block';
-            document.getElementById('admin-settings').style.display = 'none';
-            
-            loadGallery();
-            setupImageUpload();
-        }
-        
-        // Admin Configurações
+
         function showSettingsAdmin() {
             document.getElementById('admin-dashboard').style.display = 'none';
             document.getElementById('admin-products').style.display = 'none';
             document.getElementById('admin-categories').style.display = 'none';
-            document.getElementById('admin-images').style.display = 'none';
             document.getElementById('admin-settings').style.display = 'block';
-            
-            loadSettings();
         }
-        
-        // Modal Produto (com captura de arquivos)
+
         function openProductModal(productId = null) {
             editingProductId = productId;
             const modal = document.getElementById('product-modal');
             const title = document.getElementById('product-modal-title');
 
-            productImageFiles = [];
-            const productImageInput = document.getElementById('product-image-input');
-            productImageInput.value = "";
-
             const categorySelect = document.getElementById('product-category');
             categorySelect.innerHTML = '<option value="">Selecione uma categoria</option>';
             categories.forEach(category => {
                 const option = document.createElement('option');
-                option.value = category.name.toLowerCase().replace(/ /g, '-');
+                option.value = category.code;
                 option.textContent = category.name;
                 categorySelect.appendChild(option);
             });
             
             if (productId) {
-                title.textContent = 'Editar Produto';
+                title.textContent = 'Editar Produto (somente local)';
                 const product = products.find(p => p.id === productId);
                 
                 if (product) {
@@ -1473,117 +1267,85 @@
                     document.getElementById('product-category').value = product.category;
                     document.getElementById('product-brand').value = product.brand;
                     document.getElementById('product-description').value = product.description || '';
+                    document.getElementById('product-image-filename').value = product.images && product.images[0]
+                        ? product.images[0].replace('img/produtos/','')
+                        : '';
                 }
             } else {
-                title.textContent = 'Novo Produto';
+                title.textContent = 'Novo Produto (somente local)';
                 document.getElementById('product-ref').value = '';
                 document.getElementById('product-name').value = '';
                 document.getElementById('product-category').value = '';
                 document.getElementById('product-brand').value = '';
                 document.getElementById('product-description').value = '';
+                document.getElementById('product-image-filename').value = '';
             }
-
-            productImageInput.onchange = function (event) {
-                productImageFiles = Array.from(event.target.files);
-            };
             
             modal.classList.add('active');
         }
-        
+
         function closeProductModal() {
             document.getElementById('product-modal').classList.remove('active');
             editingProductId = null;
-            productImageFiles = [];
         }
-        
-        async function saveProduct() {
+
+        function saveProduct() {
             const ref = document.getElementById('product-ref').value.trim();
             const name = document.getElementById('product-name').value.trim();
             const category = document.getElementById('product-category').value;
             const brand = document.getElementById('product-brand').value.trim();
             const description = document.getElementById('product-description').value.trim();
+            const imageFilename = document.getElementById('product-image-filename').value.trim();
             
             if (!ref || !name || !category) {
                 showNotification('error', 'Preencha REF, Nome e Categoria');
                 return;
             }
 
-            let product;
+            const images = imageFilename ? [`img/produtos/${imageFilename}`] : [];
+
             if (editingProductId) {
                 const index = products.findIndex(p => p.id === editingProductId);
                 if (index !== -1) {
-                    products[index] = { 
-                        ...products[index], 
-                        ref, 
-                        name, 
-                        category, 
-                        brand, 
-                        description 
-                    };
-                    product = products[index];
+                    products[index] = { ...products[index], ref, name, category, brand, description, images };
                 }
-                showNotification('info', 'Atualizando produto...');
+                showNotification('success', 'Produto atualizado (somente nesta sessão)!');
             } else {
-                product = {
+                const newProduct = {
                     id: products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1,
                     ref,
                     name,
                     category,
                     brand,
                     description,
-                    images: [],
+                    images,
                     status: 'active'
                 };
-                products.push(product);
-                showNotification('info', 'Cadastrando produto...');
+                products.push(newProduct);
+                showNotification('success', 'Produto criado (somente nesta sessão)!');
             }
-
-            try {
-                if (productImageFiles.length > 0) {
-                    showNotification('info', 'Enviando imagens do produto...');
-
-                    const uploadPromises = productImageFiles.map(file => {
-                        const storageRef = storage.ref().child(`products/${product.id}/${Date.now()}_${file.name}`);
-                        return storageRef
-                            .put(file)
-                            .then(snapshot => snapshot.ref.getDownloadURL());
-                    });
-
-                    const urls = await Promise.all(uploadPromises);
-
-                    if (!Array.isArray(product.images)) {
-                        product.images = [];
-                    }
-                    product.images.push(...urls);
-                }
-
-                saveData();
-
-                showNotification('success', editingProductId ? 'Produto atualizado!' : 'Produto cadastrado!');
-                closeProductModal();
-                loadProductsAdmin();
-                loadCatalog();
-            } catch (error) {
-                console.error('Erro ao salvar produto/imagens:', error);
-                showNotification('error', 'Erro ao enviar imagens do produto. Veja o console do navegador.');
-            }
+            
+            closeProductModal();
+            loadProductsAdmin();
+            loadCatalog();
         }
-        
+
         function editProduct(id) {
             openProductModal(id);
         }
-        
+
         function deleteProduct(id) {
-            if (confirm('Excluir este produto?')) {
-                products = products.filter(p => p.id !== id);
-                saveData();
-                showNotification('success', 'Produto excluído!');
+            if (confirm('Excluir este produto (apenas em memória)?')) {
+                const index = products.findIndex(p => p.id === id);
+                if (index !== -1) {
+                    products.splice(index, 1);
+                }
+                showNotification('success', 'Produto removido (desta sessão).');
                 loadProductsAdmin();
                 loadCatalog();
             }
         }
-        
-        // Buscar produtos
+
         function searchProducts() {
             const searchTerm = document.getElementById('product-search').value.toLowerCase();
             const productsList = document.getElementById('products-list');
@@ -1613,7 +1375,7 @@
             }
             
             filtered.forEach(product => {
-                const categoryInfo = categories.find(c => c.id == product.category.split('-')[0]) || { name: product.category };
+                const categoryInfo = categories.find(c => c.code === product.category) || { name: product.category };
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${product.ref}</td>
@@ -1634,254 +1396,11 @@
                 productsList.appendChild(row);
             });
         }
-        
-        // Modal Categoria
-        function openCategoryModal(categoryId = null) {
-            editingCategoryId = categoryId;
-            const modal = document.getElementById('category-modal');
-            const title = document.getElementById('category-modal-title');
-            
-            if (categoryId) {
-                title.textContent = 'Editar Categoria';
-                const category = categories.find(c => c.id === categoryId);
-                
-                if (category) {
-                    document.getElementById('category-name').value = category.name;
-                    document.getElementById('category-description').value = category.description;
-                    document.getElementById('category-icon').value = category.icon;
-                }
-            } else {
-                title.textContent = 'Nova Categoria';
-                document.getElementById('category-name').value = '';
-                document.getElementById('category-description').value = '';
-                document.getElementById('category-icon').value = 'fas fa-box';
-            }
-            
-            modal.classList.add('active');
-        }
-        
+
         function closeCategoryModal() {
             document.getElementById('category-modal').classList.remove('active');
-            editingCategoryId = null;
         }
-        
-        function saveCategory() {
-            const name = document.getElementById('category-name').value.trim();
-            const description = document.getElementById('category-description').value.trim();
-            const icon = document.getElementById('category-icon').value;
-            
-            if (!name) {
-                showNotification('error', 'Nome da categoria é obrigatório');
-                return;
-            }
-            
-            if (editingCategoryId) {
-                const index = categories.findIndex(c => c.id === editingCategoryId);
-                if (index !== -1) {
-                    categories[index] = { ...categories[index], name, description, icon };
-                }
-                showNotification('success', 'Categoria atualizada!');
-            } else {
-                const newCategory = {
-                    id: categories.length > 0 ? Math.max(...categories.map(c => c.id)) + 1 : 1,
-                    name,
-                    description,
-                    icon,
-                    status: 'active'
-                };
-                categories.push(newCategory);
-                showNotification('success', 'Categoria criada!');
-            }
-            
-            saveData();
-            closeCategoryModal();
-            loadCategoriesAdmin();
-            loadCatalog();
-        }
-        
-        function editCategory(id) {
-            openCategoryModal(id);
-        }
-        
-        function deleteCategory(id) {
-            const category = categories.find(c => c.id === id);
-            const productsInCategory = products.filter(p => {
-                const categoryName = category.name.toLowerCase().replace(/ /g, '-');
-                return p.category === categoryName;
-            });
-            
-            if (productsInCategory.length > 0) {
-                showNotification('error', `Não é possível excluir. Existem ${productsInCategory.length} produto(s) nesta categoria.`);
-                return;
-            }
-            
-            if (confirm('Excluir esta categoria?')) {
-                categories = categories.filter(c => c.id !== id);
-                saveData();
-                showNotification('success', 'Categoria excluída!');
-                loadCategoriesAdmin();
-                loadCatalog();
-            }
-        }
-        
-        // Upload de Imagens (galeria geral)
-        function setupImageUpload() {
-            const dropArea = document.getElementById('upload-area');
-            const fileInput = document.getElementById('image-input');
-            
-            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-                dropArea.addEventListener(eventName, preventDefaults, false);
-            });
-            
-            function preventDefaults(e) {
-                e.preventDefault();
-                e.stopPropagation();
-            }
-            
-            ['dragenter', 'dragover'].forEach(eventName => {
-                dropArea.addEventListener(eventName, () => dropArea.style.borderColor = '#3b82f6', false);
-            });
-            
-            ['dragleave', 'drop'].forEach(eventName => {
-                dropArea.addEventListener(eventName, () => dropArea.style.borderColor = '#cbd5e1', false);
-            });
-            
-            dropArea.addEventListener('drop', handleDrop, false);
-            
-            function handleDrop(e) {
-                const files = e.dataTransfer.files;
-                handleFiles(files);
-            }
-            
-            fileInput.addEventListener('change', function() {
-                handleFiles(this.files);
-            });
-        }
-        
-        function handleFiles(files) {
-            const preview = document.getElementById('image-preview');
-            
-            for (let file of files) {
-                if (!file.type.match('image.*')) {
-                    showNotification('error', 'Apenas imagens são permitidas');
-                    continue;
-                }
-                
-                if (file.size > 10 * 1024 * 1024) {
-                    showNotification('error', 'Arquivo muito grande (máximo 10MB)');
-                    continue;
-                }
-                
-                uploadedFiles.push(file);
-                
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const item = document.createElement('div');
-                    item.className = 'gallery-item';
-                    item.innerHTML = `
-                        <img src="${e.target.result}" class="gallery-img" alt="${file.name}">
-                        <div style="position: absolute; top: 5px; right: 5px; background: rgba(239,68,68,0.9); color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.8rem;" onclick="removeUploadedImage(${uploadedFiles.length - 1})">
-                            <i class="fas fa-times"></i>
-                        </div>
-                    `;
-                    preview.appendChild(item);
-                };
-                reader.readAsDataURL(file);
-            }
-        }
-        
-        function removeUploadedImage(index) {
-            uploadedFiles.splice(index, 1);
-            updateImagePreview();
-        }
-        
-        function updateImagePreview() {
-            const preview = document.getElementById('image-preview');
-            preview.innerHTML = '';
-            
-            uploadedFiles.forEach((file, index) => {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const item = document.createElement('div');
-                    item.className = 'gallery-item';
-                    item.innerHTML = `
-                        <img src="${e.target.result}" class="gallery-img" alt="${file.name}">
-                        <div style="position: absolute; top: 5px; right: 5px; background: rgba(239,68,68,0.9); color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.8rem;" onclick="removeUploadedImage(${index})">
-                            <i class="fas fa-times"></i>
-                        </div>
-                    `;
-                    preview.appendChild(item);
-                };
-                reader.readAsDataURL(file);
-            });
-        }
-        
-        function uploadImages() {
-            if (uploadedFiles.length === 0) {
-                showNotification('error', 'Nenhuma imagem selecionada');
-                return;
-            }
-            
-            showNotification('info', `Enviando ${uploadedFiles.length} imagem(ns)...`);
-            
-            setTimeout(() => {
-                uploadedFiles.forEach(file => {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        const image = {
-                            id: images.length + 1,
-                            name: file.name,
-                            url: e.target.result,
-                            size: (file.size / 1024).toFixed(2) + ' KB',
-                            date: new Date().toLocaleDateString('pt-BR')
-                        };
-                        images.push(image);
-                    };
-                    reader.readAsDataURL(file);
-                });
-                
-                saveData();
-                loadGallery();
-                uploadedFiles = [];
-                document.getElementById('image-preview').innerHTML = '';
-                
-                showNotification('success', 'Imagens enviadas com sucesso!');
-            }, 1500);
-        }
-        
-        function loadGallery() {
-            const gallery = document.getElementById('gallery-images');
-            gallery.innerHTML = '';
-            
-            images.forEach(image => {
-                const item = document.createElement('div');
-                item.className = 'gallery-item';
-                item.innerHTML = `
-                    <img src="${image.url}" class="gallery-img" alt="${image.name}">
-                    <div style="position: absolute; top: 5px; right: 5px; background: rgba(239,68,68,0.9); color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.8rem;" onclick="removeImage(${image.id})">
-                        <i class="fas fa-times"></i>
-                    </div>
-                `;
-                gallery.appendChild(item);
-            });
-        }
-        
-        function removeImage(id) {
-            if (confirm('Excluir esta imagem?')) {
-                images = images.filter(img => img.id !== id);
-                saveData();
-                loadGallery();
-                showNotification('success', 'Imagem excluída!');
-            }
-        }
-        
-        // Configurações
-        function loadSettings() {
-            document.getElementById('company-name').value = localStorage.getItem('companyName') || 'PINTANDO QUALIDADE';
-            document.getElementById('company-phone').value = localStorage.getItem('companyPhone') || '(11) 3456-7890';
-            document.getElementById('company-email').value = localStorage.getItem('companyEmail') || 'vendas@pintandoqualidade.com.br';
-        }
-        
+
         function saveSettings() {
             const companyName = document.getElementById('company-name').value;
             const companyPhone = document.getElementById('company-phone').value;
@@ -1891,30 +1410,25 @@
             localStorage.setItem('companyPhone', companyPhone);
             localStorage.setItem('companyEmail', companyEmail);
             
-            showNotification('success', 'Configurações salvas!');
+            showNotification('success', 'Configurações salvas localmente!');
         }
-        
-        // Persistência local
-        function saveData() {
-            localStorage.setItem('products', JSON.stringify(products));
-            localStorage.setItem('categories', JSON.stringify(categories));
-            localStorage.setItem('images', JSON.stringify(images));
+
+        function loadSettings() {
+            document.getElementById('company-name').value = localStorage.getItem('companyName') || 'PINTANDO QUALIDADE';
+            document.getElementById('company-phone').value = localStorage.getItem('companyPhone') || '(11) 3456-7890';
+            document.getElementById('company-email').value = localStorage.getItem('companyEmail') || 'vendas@pintandoqualidade.com.br';
         }
-        
-        // Logout
+
         function logout() {
-            if (confirm('Deseja sair do painel administrativo?')) {
-                navigateTo('catalog');
-            }
+            navigateTo('catalog');
         }
-        
+
         // Menu Mobile
         document.getElementById('mobile-menu-toggle').addEventListener('click', function() {
             const menu = document.querySelector('.main-menu');
             menu.style.display = menu.style.display === 'none' ? 'flex' : 'none';
         });
         
-        // Inicialização
         document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('.main-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
@@ -1922,7 +1436,9 @@
                 });
             });
             
+            loadSettings();
             loadCatalog();
+            showDashboard();
             
             if (window.innerWidth <= 768) {
                 document.querySelector('.main-menu').style.display = 'none';
